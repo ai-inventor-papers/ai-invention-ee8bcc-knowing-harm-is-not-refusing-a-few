@@ -1,0 +1,4 @@
+{"disposables": [
+  {"path": ".venv", "category": "venv",
+    "reason": "recreatable from pyproject.toml (pinned deps: numpy/scipy/scikit-learn/pandas/loguru); kept only to run eval.py"}
+]}
