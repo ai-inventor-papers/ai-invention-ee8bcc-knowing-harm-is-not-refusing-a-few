@@ -1,0 +1,270 @@
+# Prior-Art Check for a Few-Prompt Safety Score
+
+## Summary
+
+Research artifact that pins down (1) which related-work claims in the hypothesis are real and what numbers they actually have, (2) algorithm-level specs for every baseline the experiment must re-implement (Arditi diff-of-means refusal direction + weight orthogonalization; AMS-style scanner sigma; supervised latent probe; refusal-template log-prob; knowledge-side probe control), (3) the exact non-gated HuggingFace checkpoint IDs for a Qwen3 base/instruct/abliterated zoo (with Llama-3.2/Gemma gated and mirror fallbacks), and (4) a dated saturation verdict. Key findings: all seven hypothesis citations resolve to real papers, but three characterizations are wrong (Arditi uses difference-in-means with NO PCA and 128+32 prompts per class, not 74/54; the flat ~0.98 abliteration-insensitive probe claim belongs to Llorente-Saguer 2604.18901 (+-0.003 AUROC) and LatentBiopsy 2603.27412 (<=0.015), not to Khatri 2609.19472; the knowledge-action 98.2/45.1 numbers belong to Basu 2603.18353); the AMS scanner r = -0.546 is UNVERIFIED (paper PDF inaccessible) and must be replaced by an in-zoo comparison; RAS/SafeVec (2606.25750) already occupies the label-rich per-model refusal-alignment-score lane, leaving the label-free few-prompt per-model refusal-RATE prediction slot thin but open. The zoo is feasible: Qwen3-0.6B/1.7B/4B (conversational) + -Base variants + huihui-ai/mlabonne abliterated 4B exist non-gated under the sizes checked; community-abliterated Gemma-2-2B exists only in GGUF (self-abliterate or swap family); Qwen3 thinking mode defaults on (enable_thinking=True), forcing a readout-position decision.
+
+## Research Findings
+
+I verified the hypothesis's related-works list against primary sources on 2026-09-19. All seven named works exist, but several characterizations in the hypothesis are wrong, and one headline number could not be verified.
+
+1. AMS scanner (Messenger 2026) is real: Google Open Source Blog announcement 2026-04-27 [1], Zenodo paper 19501951 [2], and GitHub GoogleCloudPlatform/activation-model-scanner [3], built on the AASE paired-contrastive-probe methodology [4]. It measures harmful-vs-benign direction separation in standard deviations (4-8 sigma), validated on 14 model configurations across Llama/Gemma/Qwen and 3 quantization levels [2], with per-class sigma values 3.8-8.4 (instruction-tuned), 1.1-1.3 (uncensored), 3.33 (abliterated), 0.69 (base) and thresholds PASS >3.5 / WARNING 2.0-3.5 / CRITICAL <2.0 [1] [3]. The claimed scanner-vs-behavioral-compliance correlation r = -0.546 is NOT in the blog, the README, or the Zenodo abstract, and the paper PDF is blocked (HTTP 403); it must be treated as UNVERIFIED and replaced by an in-zoo scanner-vs-behavior rho.
+
+2. Arditi et al. 2024 (arXiv 2406.11717, NeurIPS 2024) [5] [6] [24] is the B1 baseline. The direction is DIFFERENCE-IN-MEANS over residual-stream activations at post-instruction token positions (mostly the last user token), NOT PCA: a full-text grep for 'PCA|principal component' returns zero matches [6]. Contrast sets are harmful (AdvBench, MaliciousInstruct, TDC2023, HarmBench) and harmless (Alpaca) with 128 train + 32 validation each [6], not the hypothesis's 74/54. Single-vector selection uses bypass/induce scores with kl_score < 0.1 and layer fraction < 0.8L; example choices: Llama-2 7B i*=-1 l*=14/32, Llama-3 8B i*=-5 l*=12/32 [6]. Weight orthogonalization (abliteration) is W' = W - rhat*rhat^T*W applied to embedding, positional-embedding, attention-out and MLP-out matrices plus output biases [6]. Code: github.com/andyrdt/refusal_direction [7] and Sumandora/remove-refusals-with-transformers [8]. Orthogonalized Llama-2 7B reaches ASR 22.6 (79.9 without system prompt) [6].
+
+3. Khatri 2026 'Safety Beyond the Interface' (arXiv 2609.19472, IEEE DSN-W 2026) exists [9] but is a per-prompt latent-state harm detector (12.6M-param MLP probes on LLaMA-3.1-8B, F1 99/83/84 on WildJailbreak/BeaverTails/AEGIS 2.0); it contains NO abliteration experiments and NO 0.98 figure, and no reproducibility study was found. The flat ~0.98-across-abliteration claim belongs to Llorente-Saguer: supervised harm-direction probes reach AUROC 0.982 and stay within +-0.003 AUROC of the instruction-tuned variant after abliteration across 12 models and 4 families [11], and LatentBiopsy's training-free angular score stays within 0.015 [12].
+
+4. The knowledge-action gap numbers 98.2% AUROC vs 45.1% output sensitivity (53-percentage-point gap), 3,695 significant SAE features, 400 physician-adjudicated vignettes (144 hazards), Qwen2.5-7B-Instruct + Steerling-8B all verify verbatim in Basu et al., arXiv 2603.18353 [10]; this is ONE domain (clinical) and ONE family, so zoo-wide flatness stays a claim to test.
+
+5. Hildebrant (arXiv 2501.08145, six models, PCA/t-SNE/UMAP, no scalar metric) [16] and Jiang (arXiv 2606.08044, dissociated models, LVS 2.5-3.1x, latent attacks 54-86% vs 3-48%) [17] verify as characterized, and the refusal-tokens paper (arXiv 2412.06748) [18] exists but is a training-time calibration mechanism, not a detection baseline.
+
+6. Saturation (dated 2026-09-19, arXiv API + web): the lane is dense but the specific slot is open. RAS/SafeVec (arXiv 2606.25750) [14] [15] already computes a calibrated 0-100 per-model refusal-alignment score that separates aligned/uncensored/abliterated on Llama/Gemma/Qwen and tracks attack success rate - but it needs a reference aligned model and three LABELED prompt sets. LatentBiopsy (arXiv 2603.27412) [12] is label-free but a per-prompt detector. Hurtado's two-signal abliteration audit (arXiv 2607.01854, AUROC 0.95) [13] is a per-model abliteration triage. 'Refusal Before Decoding' (2605.28553) [19] shows refusal is linearly decodable at every block. Joad et al. (EMNLP 2026, 2602.02132) [20] counters single-direction readings: directions differ per refusal category, changing HOW not WHETHER the model refuses. Nearest-prior-art IDs verified: RepE 2310.01405, ITI 2306.03341, Tuned Lens 2303.08112, Patchscopes 2401.06102, HarmBench 2402.04249, WMDP 2403.03218, Circuit Breakers 2406.04313, LAT 2403.05030 [23].
+
+7. HuggingFace audit (live API, 2026-09-19): Qwen/Qwen3-0.6B/1.7B/4B are the conversational (instruct) checkpoints (standalone '-Instruct' IDs return 401), Qwen/Qwen3-1.7B-Base and Qwen/Qwen3-4B-Base are the base members, Qwen/Qwen3-4B-Instruct-2507 is the refresh, and Qwen3.5-0.8B/4B exist as newer families [22]. Abliterated safetensors candidates exist non-gated: huihui-ai/Huihui-Qwen3-4B-Instruct-2507-abliterated (8.0GB, template in a separate chat_template.jinja), mlabonne/Qwen3-4B-abliterated (16.1GB, oversize), huihui-ai/Llama-3.2-3B-Instruct-abliterated, mylesgoose/Llama-3.2-1B-Instruct-abliterated, Goekdeniz-Guelmez/Josiefied-Qwen2.5-1.5B-Instruct-abliterated-v1; no community-abliterated Qwen3-0.6B/1.7B or safetensors Gemma-2-2B exists (bartowski/gemma-2-2b-it-abliterated-GGUF is GGUF-only) -> self-abliterate or swap family. meta-llama/Llama-3.2 and google/gemma are gated 'manual'; non-gated unsloth mirrors exist for all of them [22]. Qwen3 README confirms enable_thinking=True is the default [21], so the first generated token is a think/control token and position-0 refusal log-probs need thinking disabled or the readout shifted.
+
+Confidence: high for every VERIFIED claim (primary sources fetched same-day); the single UNVERIFIED item is the AMS r = -0.546 (would be resolved by reading the Zenodo PDF). Novelty verdict: the label-free, few-prompt, per-model behavioral refusal-RATE predictor slot is THIN/OPEN as of 2026-09-19, but the knowledge-action tri-partition phenomenon is already documented and RAS/LatentBiopsy are close neighbors that the experiment must benchmark against.
+
+## Sources
+
+[1] [Introducing AMS: Activation-based model scanner for open-weight LLM safety verification (Google Open Source Blog)](https://opensource.googleblog.com/2026/04/introducing-ams-activation-based-model-scanner-for-open-weight-llm-safety-verification.html) (Glen Messenger; 2026) — Primary announcement of the AMS activation scanner (Glen Messenger, Google, 2026-04-27). Documents the sigma-separation design, the 14-model-configuration validation set, per-class sigma values, and the cited 2025 study of 8000+ safety-modified repositories. Grep for '0.546|correlat|Spearman' returned 0 matches - the r = -0.546 number is NOT on this page.
+
+> Instruction-tuned models develop internal "direction vectors"--representations that separate harmful content from benign content with high statistical confidence (4-8σ separation). When safety training is removed--through fine-tuning, abliteration, or training on unfiltered data--this geometric structure collapses.
+> 
+> AMS measures this collapse directly. The approach is grounded in recent research o
+
+Locator: Google Open Source Blog (fetched 2026-09-19)
+
+> In our validation across 14 model configurations:
+> 
+>   * **Instruction-tuned models** (Llama, Gemma, Qwen) show 3.8-8.4σ separation--consistent with strong safety training
+>   * **Uncensored variants** (Dolphin, Lexi) show collapsed separation at 1.1-1.3σ--flagged as CRITICAL
+>   * **Abliterated models** show partial degradation at 3.3σ--flagged as WARNING
+>   * **Base models** (no safety training) show 0
+
+Locator: Google Open Source Blog, 'What AMS Detects' (fetched 2026-09-19)
+
+[2] [AMS: Detecting Unsafe and Tampered Language Models via Activation Analysis (Zenodo)](https://zenodo.org/records/19501951) (Glen Messenger; 2026) — Zenodo record v1 (2026-04-10) of the AMS paper. Abstract confirms contrastive prompt pairs + direction vector analysis, model-level verification (not prompt-level classification), validation across 14 model configurations, 3 families, 3 quantization levels, per-class sigma values, the DarkIdol counter-example, and 10-40 s GPU scans. The attached ams_paper.pdf returned HTTP 403 to every fetch attempt (Zenodo bot-block); the r = -0.546 value could not be located and is marked UNVERIFIED.
+
+> Safe models exhibit strong class separation (4-8σ) between harmful and benign content; models with removed or degraded safety training show collapsed separation (<2σ). Using contrastive prompt pairs and direction vector analysis, AMS performs model-level verification rather than prompt-level classification.
+
+Locator: abstract (page fetched 2026-09-19)
+
+> We validate AMS across 14 model configurations spanning 3 architecture families (Llama, Gemma, Qwen), 3 quantization levels (FP16, INT8, INT4), and multiple model categories (instruction-tuned, base, abliterated, uncensored).
+
+Locator: abstract (page fetched 2026-09-19)
+
+[3] [GoogleCloudPlatform/activation-model-scanner (GitHub README)](https://raw.githubusercontent.com/GoogleCloudPlatform/activation-model-scanner/main/README.md) (2026) — Official AMS code repo README: tiered scanning (Tier 1 with PASS >3.5 / WARNING 2.0-3.5 / CRITICAL <2.0 sigma thresholds; Tier 2 identity verification with cosine similarity >0.7), concepts (harmful_content, injection_resistance, refusal_capability, truthfulness), AMS builds on AASE methodology, GPU-first (10-40 s on A100/L4) with slower CPU fallback, and gated vs ungated usage examples.
+
+> AMS detects whether a model has intact safety training by measuring the separation of safety-relevant concepts in the model's activation space.
+
+Locator: README.md (raw, fetched 2026-09-19)
+
+> Models with removed or degraded safety training (e.g., "uncensored" fine-tunes, abliterated models) show collapsed safety directions that AMS can detect in seconds.
+
+Locator: README.md (raw, fetched 2026-09-19)
+
+> Thresholds: PASS (>3.5σ), WARNING (2.0–3.5σ), CRITICAL (<2.0σ)
+
+Locator: README.md (raw, fetched 2026-09-19)
+
+[4] [AASE: Activation-Based AI Safety Enforcement via Lightweight Probes (research.google/pubs)](https://research.google/pubs/aase-activation-based-ai-safety-enforcement-via-lightweight-probes/) (Glen Messenger; 2026) — Methodological foundation of AMS. Abstract grep: paired contrastive probes; 7 models / 3 families; Gemma-2-9B AUC 1.00 with 7.2 sigma; Gemma-2-2B 4.3 sigma; AAG AUC >=0.88 on InjecAgent; APC 0.97-1.00 AUC; survives INT4; 9x faster than Llama Guard 3 (33 ms vs 306 ms) with TPR 88% vs 50%.
+
+> Validation across 7 models from 3 architecture families shows strong class separation: Gemma-2-9B achieves AUC 1.00 with 7.2σ separation across all probes; AAG achieves AUC ≥0.88 across all models on the InjecAgent benchmark; APC achieves 0.97-1.00 AUC across three enterprise policies.
+
+Locator: abstract (page fetched 2026-09-19)
+
+> AASE is 9× faster than Llama Guard 3 (33ms vs 306ms) with higher TPR (88% vs 50%
+
+Locator: abstract (page fetched 2026-09-19)
+
+[5] [Refusal in Language Models Is Mediated by a Single Direction (arXiv abstract)](https://arxiv.org/abs/2406.11717) (Andy Arditi, Oscar Obeso, Aaquib Syed, Daniel Paleka, Nina Panickssery, Wes Gurnee, Neel Nanda; 2024) — Arditi et al. 2024. Abstract confirms: refusal mediated by a one-dimensional subspace across 13 popular open-source chat models up to 72B; erasing the direction prevents refusal, adding it elicits refusal on harmless instructions; white-box jailbreak; adversarial-suffix analysis. Submitted 2024-06-17, v3 2024-10-30; NeurIPS 2024 proceedings version exists.
+
+> In this work, we show that refusal is mediated by a one-dimensional subspace, across 13 popular open-source chat models up to 72B parameters in size.
+
+Locator: abstract (page fetched 2026-09-19)
+
+[6] [Refusal in Language Models Is Mediated by a Single Direction (arXiv HTML v3 - method detail)](https://arxiv.org/html/2406.11717v3) (Andy Arditi, Oscar Obeso, Aaquib Syed, Daniel Paleka, Nina Panickssery, Wes Gurnee, Neel Nanda; 2024) — Full method text. Key verbatim facts: 128 train + 32 validation per class; direction = DIFFERENCE-IN-MEANS (grep 'PCA|principal component' = 0 matches - no PCA in the paper); post-instruction token positions (i*=-1 mostly); per-model layer choices in Table 5; directional ablation x' = x - rhat*rhat^T*x; weight orthogonalization W' = W - rhat*rhat^T*W on every matrix writing to the residual stream plus output biases; greedy decoding 512 tokens; orthogonalized Llama-2 7B ASR 22.6 (79.9 without system prompt).
+
+> Each dataset consists of train and validation splits of 128 and 32 samples, respectively.
+
+Locator: abstract (page fetched 2026-09-19)
+
+> we can take each matrix Wout∈ℝdmodel×dinputW_{\text{out}}\in\mathbb{R}^{d_{\text{model}}\times d_{\text{input}}} that writes to the residual stream, and orthogonalize its column vectors with respect to
+
+Locator: abstract (page fetched 2026-09-19)
+
+> the matrices that write to the residual stream are: the embedding matrix, the positional embedding matrix, attention out matrices, and MLP out matrices. Orthogonalizing all of these matrices, as well as any output biases, with respect to the direction
+
+Locator: abstract (page fetched 2026-09-19)
+
+> we always use greedy decoding and a maximum generation length of 512 tokens, as suggested in Mazeika
+
+Locator: abstract (page fetched 2026-09-19)
+
+[7] [andyrdt/refusal_direction (official code)](https://github.com/andyrdt/refusal_direction) (2024) — Official repo 'Code and results accompanying the paper' (443 stars per GitHub API, 2026-09-19). The canonical refusal-direction + abliteration codebase.
+
+[8] [Sumandora/remove-refusals-with-transformers](https://github.com/Sumandora/remove-refusals-with-transformers) (2024) — Community implementation (2202 stars, not archived, per GitHub API 2026-09-19): 'Implements harmful/harmless refusal removal using pure HF Transformers'. The widely cited 'abliteration' recipe implementation.
+
+[9] [Safety Beyond the Interface: Detecting Harm via Latent States in Large Language Models](https://arxiv.org/abs/2609.19472) (Alizishaan Khatri, Chiquita Prabhu, Omkar Neogi; 2026) — Khatri et al., submitted 2026-09-16, IEEE DSN-W 2026 pp. 48-52. LLaMA-3.1-8B; MLP probes (12.6M params) on activations; F1 99/83/84 on WildJailbreak, BeaverTails, AEGIS 2.0. Per-prompt harm detection; NO abliteration or 0.98 claims in the abstract (mischaracterization flagged). Reproducibility study NOT_FOUND.
+
+> We extract activations from LLaMA-3.1-8B and train lightweight MLP classifier probes (12.6M parameters) to detect harmful prompts. Evaluated on WildJailbreak, Beavertails, and AEGIS 2.0, our probes achieve F1 scores of 99%, 83%, and 84%, respectively competitive with 1000x larger guard models while cutting latency and compute costs.
+
+Locator: abstract (page fetched 2026-09-19)
+
+[10] [Interpretability without actionability: mechanistic methods cannot correct language model errors despite near-perfect internal representations](https://arxiv.org/abs/2603.18353) (Sanjay Basu, Sadiq Y. Patel, Parth Sheth, Bhairavi Muralidharan, Namrata Elamaran, Aakriti Kinra, John Morgan, Rajaie Batniji; 2026) — Primary source of the 98.2/45.1/53-pp knowledge-action gap: 400 physician-adjudicated vignettes (144 hazards, 256 benign); Steerling-8B and TSV results; SAE feature steering zero effect despite 3,695 significant features; Qwen 2.5 7B Instruct + Steerling-8B; code github.com/sanjaybasu/interpretability-triage.
+
+> Linear probes discriminated hazardous from benign cases with 98.2% AUROC, yet the model's output sensitivity was only 45.1%, a 53-percentage-point knowledge-action gap.
+
+Locator: abstract (page fetched 2026-09-19)
+
+> SAE feature steering produced zero effect despite 3,695 significant features. TSV steering at high strength
+
+Locator: abstract (page fetched 2026-09-19)
+
+> Concept bottleneck steering corrected 20% of missed hazards but disrupted 53% of correct detections, indistinguishable from random perturbation (p=0.84).
+
+Locator: abstract (page fetched 2026-09-19)
+
+[11] [Harmful Intent as a Geometrically Recoverable Feature of LLM Residual Streams](https://arxiv.org/abs/2604.18901) (Isaac Llorente-Saguer; 2026) — Llorente-Saguer 2026 (single author). 12 models / 4 families / 3 alignment variants; Soft-AUC direction from 100 labels per class; mean effective AUROC 0.982, TPR@1%FPR 0.797; abliterated variants within +-0.003 AUROC (flat-probe anchor); pooling protocols 73 degrees apart; code github.com/isaac-6/harm-directions.
+
+> A direction fitted from 100 labelled examples per class via Soft-AUC optimisation reaches mean effective AUROC 0.982 and TPR@1\%FPR 0.797, generalises to three held-out harm benchmarks and a hard-benign control, and matches its instruction-tuned counterpart within $\pm 0.003$ AUROC in abliterated variants from which the refusal mechanism has been removed
+
+Locator: abstract (page fetched 2026-09-19)
+
+> matches its instruction-tuned counterpart within $\pm 0.003$ AUROC in abliterated variants from which the refusal mechanism has been removed
+
+Locator: abstract (page fetched 2026-09-19)
+
+[12] [The Geometry of Harmful Intent: Training-Free Anomaly Detection via Angular Deviation in LLM Residual Streams (LatentBiopsy)](https://arxiv.org/abs/2603.27412) (Isaac Llorente-Saguer; 2026) — LatentBiopsy: training-free harmful-prompt detector; 200 safe normative prompts; leading PC + radial deviation angle theta (Gaussian NLL anomaly score); AUROC >=0.937 (harm-vs-normative) and 1.000 (XSTest) across six Qwen2.5/Qwen3.5 triplets (base/instruct/abliterated); abliteration gap <=0.015; sigma_theta 0.03 rad vs 0.27 rad normative.
+
+> Given 200 safe normative prompts, LatentBiopsy computes the leading principal component of their activations at a target layer and characterises new prompts by their radial deviation angle $\theta$ from this reference direction. The anomaly score is the negative log-likelihood of $\theta$ under a Gaussian fit to the normative distribution, flagging deviations symmetrically regardless of orientation.
+
+Locator: abstract (page fetched 2026-09-19)
+
+> both abliterated variants achieve AUROC at most 0.015 below their instruction-tuned counterparts, establishing a geometric dissociation between harmful-intent representation and the downstream generative refusal mechanism.
+
+Locator: abstract (page fetched 2026-09-19)
+
+[13] [Has This Checkpoint Been Abliterated? A Two-Signal Audit and Its Failure Map](https://arxiv.org/abs/2607.01854) (Gabriel Hurtado; 2026) — Per-model abliteration audit: reference-anchored activation refusal-gap + weight-recovery energy; z-sum AUROC 0.95 vs 0.84/0.90 single signals on a 273-checkpoint registry (Qwen, DeepSeek-distilled Qwen, Llama, Gemma); balanced accuracy 0.89 (FPR 0.11), missing 4 of 57; failure map (spoofed reference; white-box owner).
+
+> their z-sum separates 57 public abliterations from 37 benign fine-tunes, merges, and instruction-tunes at AUROC 0.95, significantly above either signal alone (0.84, 0.90), and a Youden-calibrated threshold transfers to held-out families at balanced accuracy 0.89 (FPR 0.11), missing only 4 of 57.
+
+Locator: abstract (page fetched 2026-09-19)
+
+[14] [RAS: Measuring LLM Safety Through Refusal Alignment](https://arxiv.org/abs/2606.25750) (Chang-Chieh Huang, Yan-Lun Chen, Chia-Mu Yu, Wei-Bin Lee; 2026) — DIRECT NEAR-PRIOR: SafeVec white-box procedure; extracts refusal directions from a safety-aligned REFERENCE model; RAS = calibrated 0-100 safety score; separates aligned/uncensored/abliterated on Llama, Gemma, Qwen; tracks output-level attack success rate; needs three LABELED prompt sets + reference model.
+
+> maps representation-level refusal alignment to a calibrated 0-100 safety score
+
+Locator: abstract (page fetched 2026-09-19)
+
+> RAS separates aligned models from uncensored and abliterated variants, tracks output-level attack success rate, and is substantially faster than judge-based evaluation.
+
+Locator: abstract (page fetched 2026-09-19)
+
+[15] [RAS method detail (arXiv HTML v1)](https://arxiv.org/html/2606.25750v1) (Chang-Chieh Huang, Yan-Lun Chen, Chia-Mu Yu, Wei-Bin Lee; 2026) — Method detail from the HTML version: the evaluator is given three prompt sets (safe S, unafe U, jailbreq J) fomatted with model-specific chat templates; the calibration set includes aligned, uncensored, and abliterated variants.
+
+[16] [Refusal Behavior in Large Language Models: A Nonlinear Perspective](https://arxiv.org/abs/2501.08145) (Fabian Hildebrandt, Andreas Maier, Patrick Krauss, Achim Schilling; 2025) — Six LLMs / three families; PCA, t-SNE, UMAP; refusal mechanisms nonlinear, multidimensional, vary by architecture and layer; no scalar metric, no abliterated class.
+
+> This paper investigates refusal behavior across six LLMs from three architectural families. We challenge the assumption
+
+Locator: abstract (page fetched 2026-09-19)
+
+> Our results reveal that refusal mechanisms exhibit nonlinear, multidimensional characteristics that vary by model architecture and layer. These findings highlight the need for nonlinear interpretability to improve alignment research and inform safer AI deployment strategies.
+
+Locator: abstract (page fetched 2026-09-19)
+
+[17] [When Behavioral Safety Evaluation Fails: A Representation-Level Perspective](https://arxiv.org/abs/2606.08044) (Enyi Jiang, Anders Gjolbye, Yibo Jacky Zhang, Sanmi Koyejo; 2026) — Audit gap + dissociated models (Gemma 2 2B, Llama 3.2 3B, Qwen 2.5 3B); LVS 2.5-3.1x higher; bounded latent attack 54-86% compliance vs 3-48% bases; random perturbations <=12%; harmful fine-tuning reaches high compliance in 5 gradient steps vs 10-25 for bases.
+
+> Every static audit we run gives the dissociated model the same verdict as its base, since its refusals match the base, jailbreaks show no consistent signature, and a strong fixed probe on clean activations cannot tell it from the base.
+
+Locator: abstract (page fetched 2026-09-19)
+
+> At the targeted mid layer the dissociated models score 2.5 to 3.1 times higher LVS than their bases. A bounded latent attack elicits harmful compliance on 54 to 86% of prompts, against 3 to 48% for the bases, while matched random perturbations stay at or below 12%. Harmful fine-tuning reaches high compliance within five gradient steps, where the bases need 10 to 25.
+
+Locator: abstract (page fetched 2026-09-19)
+
+[18] [Refusal Tokens: A Simple Way to Calibrate Refusals in Large Language Models](https://arxiv.org/abs/2412.06748) (Neel Jain, Aditya Shrivastava, Chenyang Zhu, Daben Liu, Alfy Samuel, Ashwinee Panda, Anoop Kumar, Micah Goldblum, Tom Goldstein; 2024) — Training-time calibration tokens prepended to responses; inference-time probability steering controls refusal rates; NOT a per-model refusal detection baseline.
+
+> we propose refusal tokens, one such token for each refusal category or a single refusal token, which are prepended to the model's responses during training. We then show how to increase or decrease the probability of generating the refusal token for each category during inference to steer the model's refusal behavior. Refusal tokens enable controlling a single model's refusal rates without the need of any further fine-tuning, but only by selectively intervening during generation.
+
+Locator: abstract (page fetched 2026-09-19)
+
+[19] [Refusal Before Decoding: Detecting and Exploiting Refusal Signals in Intermediate LLM Activations](https://arxiv.org/abs/2605.28553) (Matteo Gioele Collu, Riccardo Conte, Alberto Giaretta, Denis Kleyko, Mauro Conti, Matteo Zavatteri, Roberto Confalonieri; 2026) — Refusal linearly decodable at every transformer block before the final layer; probe-guided Mechanistic AutoDAN cuts per-iteration search time up to 72%; per-prompt jailbreak search, not a per-model safety metric.
+
+> we investigate whether refusal behavior can be predicted from LLM intermediate activations before decoding using linear probes trained on residual stream activations at each transformer block. We find that refusal is linearly decodable well before the final layer, indicating that safety-relevant behavior is represented in intermediate activations before output generation.
+
+Locator: abstract (page fetched 2026-09-19)
+
+[20] [There Is More to Refusal in Large Language Models than a Single Direction](https://arxiv.org/abs/2602.02132) (Faaiz Joad, Majd Hawasly, Sabri Boughorbel, Nadir Durrani, Husrev Taha Sencar; 2026) — EMNLP-2026 counterpoint: refusal categories have geometrically distinct directions; directions affect HOW not WHETHER the model refuses; SAE analysis finds a reusable core of shared refusal latents plus style/domain-specific latents.
+
+> refusal behaviors correspond to geometrically distinct directions in activation space. Yet activation steering along any refusal-related direction produces nearly identical refusal--over-refusal trade-offs, acting as a shared one-dimensional control knob. Thus, different directions primarily affect not whether the model refuses, but how it refuses.
+
+Locator: abstract (page fetched 2026-09-19)
+
+[21] [Qwen/Qwen3-4B model card (README)](https://huggingface.co/Qwen/Qwen3-4B/raw/main/README.md) (2025) — README confirms enable_thinking=True is the DEFAULT ('Switches between thinking and non-thinking modes. Default is True.') - the first-generated-token pitfall for position-0 refusal logit reads. Qwen3-4B is a 3.9B-parameter model in the 4B class.
+
+> enable_thinking=True # Switches between thinking and non-thinking modes. Default is True.
+
+Locator: README.md raw (fetched 2026-09-19)
+
+[22] [Hugging Face API model search: Qwen3 (plus abliterated / Llama / Gemma searches)](https://huggingface.co/api/models?search=Qwen3&sort=downloads&limit=60) (2026) — Live HF API enumerations on 2026-09-19: Qwen3 family (Qwen3-0.6B/1.7B/4B, Qwen3-4B-Instruct-2507, Qwen3.5/3.6/3.8 families), the abliterated search (huihui-ai, mlabonne, bartowski, mylesgoose, Goekdeniz-Guelmez etc.), per-repo metadata and tree sizes, and tokenizer_config.json chat-template checks (huihui-ai abliterated repos keep separate chat_template.jinja files).
+
+[23] [arXiv API saturation queries (2026-09-19)](https://export.arxiv.org/api/query?search_query=all:%22refusal%20direction%22%20AND%20all:%22score%22&max_results=10) (2026) — arXiv API saturation runs (this URL is the representative first query): refusal-direction+score, safety-metric+few-shot, compliance+activation+refusal, refusal-rate+activation, knowledge-action-gap, label-free+safety, refusal+abliteration, activation-scanner; plus the S3 prior-art arXiv ID verification (RepE 2310.01405, ITI 2306.03341, Tuned Lens 2303.08112, Patchscopes 2401.06102, HarmBench 2402.04249, WMDP 2403.03218, Circuit Breakers 2406.04313, LAT 2403.05030).
+
+[24] [Arditi et al. 2024, NeurIPS 2024 proceedings version (search-listing evidence)](https://proceedings.neurips.cc/paper_files/paper/2024/file/f545448535dfde4f9786555403ab7c49-Paper-Conference.pdf) (Andy Arditi, Oscar Obeso, Aaquib Syed, Daniel Paleka, Nina Panickssery, Wes Gurnee, Neel Nanda; 2024) — Surfaced in general-web search as the NeurIPS 2024 proceedings PDF path: peer-reviewed publication evidence for Arditi et al. 2024 (snippet-level evidence only; page not fetched).
+
+## Verification
+
+Numbered citations resolve to unique listed sources. Passage checks test text occurrence, not claim truth or entailment. Author/year metadata and locators are not independently verified. Details: `research_verification.json`.
+
+- Source [1]: text found — Instruction-tuned models develop internal "direction vectors"--representations that separate harmful
+- Source [1]: text found — In our validation across 14 model configurations:
+
+  * **Instruction-tuned models** (Llama, Gemma, Q
+- Source [2]: text found — Safe models exhibit strong class separation (4-8σ) between harmful and benign content; models with r
+- Source [2]: text found — We validate AMS across 14 model configurations spanning 3 architecture families (Llama, Gemma, Qwen)
+- Source [3]: text found — AMS detects whether a model has intact safety training by measuring the separation of safety-relevan
+- Source [3]: text found — Models with removed or degraded safety training (e.g., "uncensored" fine-tunes, abliterated models) 
+- Source [3]: text found — Thresholds: PASS (>3.5σ), WARNING (2.0–3.5σ), CRITICAL (<2.0σ)
+- Source [4]: text found — Validation across 7 models from 3 architecture families shows strong class separation: Gemma-2-9B ac
+- Source [4]: text found — AASE is 9× faster than Llama Guard 3 (33ms vs 306ms) with higher TPR (88% vs 50%
+- Source [5]: text found — In this work, we show that refusal is mediated by a one-dimensional subspace, across 13 popular open
+- Source [6]: text found — Each dataset consists of train and validation splits of 128 and 32 samples, respectively.
+- Source [6]: text found — we can take each matrix Wout∈ℝdmodel×dinputW_{\text{out}}\in\mathbb{R}^{d_{\text{model}}\times d_{\t
+- Source [6]: text found — the matrices that write to the residual stream are: the embedding matrix, the positional embedding m
+- Source [6]: text found — we always use greedy decoding and a maximum generation length of 512 tokens, as suggested in Mazeika
+- Source [9]: text found — We extract activations from LLaMA-3.1-8B and train lightweight MLP classifier probes (12.6M paramete
+- Source [10]: text found — Linear probes discriminated hazardous from benign cases with 98.2% AUROC, yet the model's output sen
+- Source [10]: text found — SAE feature steering produced zero effect despite 3,695 significant features. TSV steering at high s
+- Source [10]: text found — Concept bottleneck steering corrected 20% of missed hazards but disrupted 53% of correct detections,
+- Source [11]: text found — A direction fitted from 100 labelled examples per class via Soft-AUC optimisation reaches mean effec
+- Source [11]: text found — matches its instruction-tuned counterpart within $\pm 0.003$ AUROC in abliterated variants from whic
+- Source [12]: text found — Given 200 safe normative prompts, LatentBiopsy computes the leading principal component of their act
+- Source [12]: text found — both abliterated variants achieve AUROC at most 0.015 below their instruction-tuned counterparts, es
+- Source [13]: text found — their z-sum separates 57 public abliterations from 37 benign fine-tunes, merges, and instruction-tun
+- Source [14]: text found — maps representation-level refusal alignment to a calibrated 0-100 safety score
+- Source [14]: text found — RAS separates aligned models from uncensored and abliterated variants, tracks output-level attack su
+- Source [16]: text found — This paper investigates refusal behavior across six LLMs from three architectural families. We chall
+- Source [16]: text found — Our results reveal that refusal mechanisms exhibit nonlinear, multidimensional characteristics that 
+- Source [17]: text found — Every static audit we run gives the dissociated model the same verdict as its base, since its refusa
+- Source [17]: text found — At the targeted mid layer the dissociated models score 2.5 to 3.1 times higher LVS than their bases.
+- Source [18]: text found — we propose refusal tokens, one such token for each refusal category or a single refusal token, which
+- Source [19]: text found — we investigate whether refusal behavior can be predicted from LLM intermediate activations before de
+- Source [20]: text found — refusal behaviors correspond to geometrically distinct directions in activation space. Yet activatio
+- Source [21]: text found — enable_thinking=True # Switches between thinking and non-thinking modes. Default is True.
+
+## Follow-up Questions
+
+- How should the refusal-vs-compliance logit difference at the first generated position be defined per family (vocabulary-specific first tokens of refusal vs compliance phrases)?
+- Qwen3 instruct defaults to thinking mode (enable_thinking=True per README): should the experiment disable thinking or shift the readout position, and do the base Qwen3 models need the same handling?
+- Leakage control: the index and the latent probe share the 12+12 probe prompts - what split or CV protocol keeps the probe honest?
+- Should the held-out behavioral set reuse HarmBench behaviors or custom prompts, and which keyword heuristic (Zou-2023-style list) plus spot-checking protocol labels refusal reliably?
+- Is a self-abliterated Gemma (Arditi recipe) acceptable as a community-ablation proxy if no safetensors community-abliterated Gemma-2-2B exists (only GGUF bartowski repo found)?
+- HF_TOKEN exists in the environment but meta-llama / google repos are gated manual (license acceptance required): use unsloth mirrors or attempt gated downloads, and does gating block the cross-family rank-correlation claim?
+- Which Qwen3 revision to standardize on (original vs -2507), given two parallel abliterated variants (huihui-2507 vs mlabonne) with different template handling?
+- How many contrast pairs does the scanner baseline need for stable sigma on a 16GB CPU (k, batch size, layer subset)?
+- Is the 4-prompt index stable (bootstrap CIs over prompt subsets), and what is the minimum zoo size for the rank-correlation claim at rho >= 0.75?
+- Should bootstrap intervals be over prompts, models, or both, and should RAS (reference-model-based) and LatentBiopsy (200-safe-prompt) be added as additional baselines with their prompt sets reproduced from their repos?
+
+---
+*Generated by AI Inventor Pipeline*

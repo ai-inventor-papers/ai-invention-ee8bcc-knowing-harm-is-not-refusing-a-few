@@ -1,0 +1,189 @@
+Skip to main content [](https://arxiv.org/IgnoreMe) [ ](https://arxiv.org/) [ Search ](https://arxiv.org/search) [Submit](https://arxiv.org/user/create) [Donate](https://info.arxiv.org/about/donate.html) [Log in](https://arxiv.org/login)
+
+Search arXiv
+
+Press Enter to search * [Advanced search](https://arxiv.org/search/advanced)
+
+# Computer Science > Artificial Intelligence
+
+**arXiv:2603.18353** (cs) 
+
+[Submitted on 18 Mar 2026]
+
+# Title:Interpretability without actionability: mechanistic methods cannot correct language model errors despite near-perfect internal representations
+
+Authors:[Sanjay Basu](https://arxiv.org/search/cs?searchtype=author&query=Basu,+S), [Sadiq Y. Patel](https://arxiv.org/search/cs?searchtype=author&query=Patel,+S+Y), [Parth Sheth](https://arxiv.org/search/cs?searchtype=author&query=Sheth,+P), [Bhairavi Muralidharan](https://arxiv.org/search/cs?searchtype=author&query=Muralidharan,+B), [Namrata Elamaran](https://arxiv.org/search/cs?searchtype=author&query=Elamaran,+N), [Aakriti Kinra](https://arxiv.org/search/cs?searchtype=author&query=Kinra,+A), [John Morgan](https://arxiv.org/search/cs?searchtype=author&query=Morgan,+J), [Rajaie Batniji](https://arxiv.org/search/cs?searchtype=author&query=Batniji,+R)
+
+View a PDF of the paper titled Interpretability without actionability: mechanistic methods cannot correct language model errors despite near-perfect internal representations, by Sanjay Basu and 7 other authors
+
+[View PDF](/pdf/2603.18353) [HTML (experimental)](https://arxiv.org/html/2603.18353v1)
+
+> Abstract:Language models encode task-relevant knowledge in internal representations that far exceeds their output performance, but whether mechanistic interpretability methods can bridge this knowledge-action gap has not been systematically tested. We compared four mechanistic interpretability methods -- concept bottleneck steering (Steerling-8B), sparse autoencoder feature steering, logit lens with activation patching, and linear probing with truthfulness separator vector steering (Qwen 2.5 7B Instruct) -- for correcting false-negative triage errors using 400 physician-adjudicated clinical vignettes (144 hazards, 256 benign). Linear probes discriminated hazardous from benign cases with 98.2% AUROC, yet the model's output sensitivity was only 45.1%, a 53-percentage-point knowledge-action gap. Concept bottleneck steering corrected 20% of missed hazards but disrupted 53% of correct detections, indistinguishable from random perturbation (p=0.84). SAE feature steering produced zero effect despite 3,695 significant features. TSV steering at high strength corrected 24% of missed hazards while disrupting 6% of correct detections, but left 76% of errors uncorrected. Current mechanistic interpretability methods cannot reliably translate internal knowledge into corrected outputs, with implications for AI safety frameworks that assume interpretability enables effective error correction. 
+
+Comments: | 27 pages, 5 figures, 10 tables. Code available at [this https URL](https://github.com/sanjaybasu/interpretability-triage)  
+---|---  
+Subjects: |  Artificial Intelligence (cs.AI)  
+ACM classes: | I.2.7; J.3  
+Cite as: | [arXiv:2603.18353](https://arxiv.org/abs/2603.18353) [cs.AI]  
+  | (or  [arXiv:2603.18353v1](https://arxiv.org/abs/2603.18353v1) [cs.AI] for this version)   
+  |  <https://doi.org/10.48550/arXiv.2603.18353> Focus to learn more arXiv-issued DOI via DataCite  
+  
+## Submission history
+
+From: Sanjay Basu [[view email](/show-email/2d0212a9/2603.18353)]   
+**[v1]** Wed, 18 Mar 2026 23:31:05 UTC (127 KB)  
+
+
+Full-text links:
+
+## Access Paper:
+
+View a PDF of the paper titled Interpretability without actionability: mechanistic methods cannot correct language model errors despite near-perfect internal representations, by Sanjay Basu and 7 other authors
+
+  * [View PDF](/pdf/2603.18353)
+  * [HTML (experimental)](https://arxiv.org/html/2603.18353v1)
+  * [TeX Source ](/src/2603.18353)
+
+
+
+[ view license ](http://creativecommons.org/licenses/by/4.0/ "Rights to this article")
+
+### Current browse context:
+
+cs.AI
+
+[< prev](/prevnext?id=2603.18353&function=prev&context=cs.AI "previous in cs.AI \(accesskey p\)")   |   [next >](/prevnext?id=2603.18353&function=next&context=cs.AI "next in cs.AI \(accesskey n\)")   
+
+
+[new](/list/cs.AI/new) |  [recent](/list/cs.AI/recent) | [2026-03](/list/cs.AI/2026-03)
+
+Change to browse by: 
+
+[cs](/abs/2603.18353?context=cs)  
+
+
+### References & Citations
+
+  * [NASA ADS](https://ui.adsabs.harvard.edu/abs/arXiv:2603.18353)
+  * [Google Scholar](https://scholar.google.com/scholar_lookup?arxiv_id=2603.18353)
+  * [Semantic Scholar](https://api.semanticscholar.org/arXiv:2603.18353)
+
+
+
+export BibTeX citation Loading...
+
+## BibTeX formatted citation
+
+×
+
+loading...
+
+Data provided by: 
+
+### Bookmark
+
+[ ](http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=https://arxiv.org/abs/2603.18353&description=Interpretability without actionability: mechanistic methods cannot correct language model errors despite near-perfect internal representations "Bookmark on BibSonomy") [ ](https://reddit.com/submit?url=https://arxiv.org/abs/2603.18353&title=Interpretability without actionability: mechanistic methods cannot correct language model errors despite near-perfect internal representations "Bookmark on Reddit")
+
+Bibliographic Tools
+
+# Bibliographic and Citation Tools
+
+Bibliographic Explorer Toggle
+
+Bibliographic Explorer _([What is the Explorer?](https://info.arxiv.org/labs/showcase.html#arxiv-bibliographic-explorer))_
+
+Connected Papers Toggle
+
+Connected Papers _([What is Connected Papers?](https://www.connectedpapers.com/about))_
+
+Litmaps Toggle
+
+Litmaps _([What is Litmaps?](https://www.litmaps.co/))_
+
+scite.ai Toggle
+
+scite Smart Citations _([What are Smart Citations?](https://www.scite.ai/))_
+
+Code, Data, Media
+
+# Code, Data and Media Associated with this Article
+
+alphaXiv Toggle
+
+alphaXiv _([What is alphaXiv?](https://alphaxiv.org/))_
+
+Links to Code Toggle
+
+CatalyzeX Code Finder for Papers _([What is CatalyzeX?](https://www.catalyzex.com))_
+
+DagsHub Toggle
+
+DagsHub _([What is DagsHub?](https://dagshub.com/))_
+
+GotitPub Toggle
+
+Gotit.pub _([What is GotitPub?](http://gotit.pub/faq))_
+
+Huggingface Toggle
+
+Hugging Face _([What is Huggingface?](https://huggingface.co/huggingface))_
+
+ScienceCast Toggle
+
+ScienceCast _([What is ScienceCast?](https://sciencecast.org/welcome))_
+
+Demos
+
+# Demos
+
+Replicate Toggle
+
+Replicate _([What is Replicate?](https://replicate.com/docs/arxiv/about))_
+
+Spaces Toggle
+
+Hugging Face Spaces _([What is Spaces?](https://huggingface.co/docs/hub/spaces))_
+
+Spaces Toggle
+
+TXYZ.AI _([What is TXYZ.AI?](https://txyz.ai))_
+
+Related Papers
+
+# Recommenders and Search Tools
+
+Link to Influence Flower
+
+Influence Flower _([What are Influence Flowers?](https://influencemap.cmlab.dev/))_
+
+Core recommender toggle
+
+CORE Recommender _([What is CORE?](https://core.ac.uk/services/recommender))_
+
+  * Author
+  * Venue
+  * Institution
+  * Topic
+
+
+
+About arXivLabs 
+
+# arXivLabs: experimental projects with community collaborators
+
+arXivLabs is a framework that allows collaborators to develop and share new arXiv features directly on our website.
+
+Both individuals and organizations that work with arXivLabs have embraced and accepted our values of openness, community, excellence, and user data privacy. arXiv is committed to these values and only works with partners that adhere to them.
+
+Have an idea for a project that will add value for arXiv's community? [**Learn more about arXivLabs**](https://info.arxiv.org/labs/index.html).
+
+[Which authors of this paper are endorsers?](/auth/show-endorsers/2603.18353) | [Disable MathJax](javascript:setMathjaxCookie\(\)) ([What is MathJax?](https://info.arxiv.org/help/mathjax.html)) 
+
+We gratefully acknowledge support from our **major funders** , [**member institutions**](https://info.arxiv.org/about/ourmembers.html) , ****, and all contributors.
+
+[About](https://info.arxiv.org/about) * [Help](https://info.arxiv.org/help) * [Contact](https://info.arxiv.org/help/contact.html) * [Subscribe](https://info.arxiv.org/help/subscribe) * [Copyright](https://info.arxiv.org/help/license/index.html) * [Privacy](https://info.arxiv.org/help/policies/privacy_policy.html) * [Accessibility](https://info.arxiv.org/help/web_accessibility.html) * [Operational Status (opens in new tab)](https://status.arxiv.org)
+
+Major funding support from
+
+[ ](https://www.simonsfoundation.org/) [ ](https://www.sfi.org.bm/) [ ](https://www.schmidtsciences.org/)
+  *[ACM]: Association of Computing Machinery Classification

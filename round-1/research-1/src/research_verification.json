@@ -1,0 +1,316 @@
+{
+  "valid": true,
+  "file_errors": [],
+  "schema_errors": [],
+  "content_warnings": [],
+  "files_found": {
+    "research_out.json": {
+      "exists": true,
+      "path": "/ai-inventor/aii_data/runs/run_hhQTjY478FHc/3_invention_loop/iter_1/gen_art/gen_art_research_1/research_out.json",
+      "source_count": 24,
+      "size": 35502
+    }
+  },
+  "source_count": 24,
+  "checked_at": "2026-09-19T02:32:21.639402+00:00",
+  "passage_check_scope": "Case/whitespace-normalized text occurrence at the source URL (or archive fallback). Not claim entailment, locator verification, or author/year verification. status=error means unverified, not a misquotation.",
+  "passages": [
+    {
+      "source_index": 1,
+      "source_url": "https://opensource.googleblog.com/2026/04/introducing-ams-activation-based-model-scanner-for-open-weight-llm-safety-verification.html",
+      "quote": "Instruction-tuned models develop internal \"direction vectors\"--representations that separate harmful content from benign content with high statistical confidence (4-8σ separation). When safety training is removed--through fine-tuning, abliteration, or training on unfiltered data--this geometric structure collapses.\n\nAMS measures this collapse directly. The approach is grounded in recent research o",
+      "locator": "Google Open Source Blog (fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...model thinks. safety training creates measurable geometric structure in a model's activation space. instruction-tuned models develop internal \"direction vectors\"--representations that separate harmful content from benign content with high statistical confidence (4-8σ separation). when safety training is removed--through fine-tuning, abliteration, or training on unfiltered data--this geometric structure collapses. ams measures this collapse directly. the approach is grounded in recent research on representation engineering, which demonstrates that high-level concepts are encoded linearly in ll...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 1,
+      "source_url": "https://opensource.googleblog.com/2026/04/introducing-ams-activation-based-model-scanner-for-open-weight-llm-safety-verification.html",
+      "quote": "In our validation across 14 model configurations:\n\n  * **Instruction-tuned models** (Llama, Gemma, Qwen) show 3.8-8.4σ separation--consistent with strong safety training\n  * **Uncensored variants** (Dolphin, Lexi) show collapsed separation at 1.1-1.3σ--flagged as CRITICAL\n  * **Abliterated models** show partial degradation at 3.3σ--flagged as WARNING\n  * **Base models** (no safety training) show 0",
+      "locator": "Google Open Source Blog, 'What AMS Detects' (fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...nt against a verified baseline to detect subtle modifications, including supply chain substitution. in our validation across 14 model configurations: * **instruction-tuned models** (llama, gemma, qwen) show 3.8-8.4σ separation--consistent with strong safety training * **uncensored variants** (dolphin, lexi) show collapsed separation at 1.1-1.3σ--flagged as critical * **abliterated models** show partial degradation at 3.3σ--flagged as warning * **base models** (no safety training) show 0.69σ--confirming the absence of safety structure * **quantized models** (int4/int8) show less than 5...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 2,
+      "source_url": "https://zenodo.org/records/19501951",
+      "quote": "Safe models exhibit strong class separation (4-8σ) between harmful and benign content; models with removed or degraded safety training show collapsed separation (<2σ). Using contrastive prompt pairs and direction vector analysis, AMS performs model-level verification rather than prompt-level classification.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...ach: measuring the geometric structure of safety-relevant concepts in the model's activation space. safe models exhibit strong class separation (4-8σ) between harmful and benign content; models with removed or degraded safety training show collapsed separation (<2σ). using contrastive prompt pairs and direction vector analysis, ams performs model-level verification rather than prompt-level classification. we validate ams across 14 model configurations spanning 3 architecture families (llama, gemma, qwen...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 2,
+      "source_url": "https://zenodo.org/records/19501951",
+      "quote": "We validate AMS across 14 model configurations spanning 3 architecture families (Llama, Gemma, Qwen), 3 quantization levels (FP16, INT8, INT4), and multiple model categories (instruction-tuned, base, abliterated, uncensored).",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...ion vector analysis, ams performs model-level verification rather than prompt-level classification. we validate ams across 14 model configurations spanning 3 architecture families (llama, gemma, qwen), 3 quantization levels (fp16, int8, int4), and multiple model categories (instruction-tuned, base, abliterated, uncensored). in our validation set: (1) all four instruction-tuned models pass with 3.8-8.4σ separation; (2) thr...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 3,
+      "source_url": "https://raw.githubusercontent.com/GoogleCloudPlatform/activation-model-scanner/main/README.md",
+      "quote": "AMS detects whether a model has intact safety training by measuring the separation of safety-relevant concepts in the model's activation space.",
+      "locator": "README.md (raw, fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...source software vulnerability rewards program](https://bughunters.google.com/open-source-security). ams detects whether a model has intact safety training by measuring the separation of safety-relevant concepts in the model's activation space. models with removed or degraded safety training (e.g., \"uncensored\" fine-tunes, abliterated models)...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 3,
+      "source_url": "https://raw.githubusercontent.com/GoogleCloudPlatform/activation-model-scanner/main/README.md",
+      "quote": "Models with removed or degraded safety training (e.g., \"uncensored\" fine-tunes, abliterated models) show collapsed safety directions that AMS can detect in seconds.",
+      "locator": "README.md (raw, fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...y training by measuring the separation of safety-relevant concepts in the model's activation space. models with removed or degraded safety training (e.g., \"uncensored\" fine-tunes, abliterated models) show collapsed safety directions that ams can detect in seconds. ## platform requirements ams requires a gpu for standard operation. scan times of 10–40 seconds quo...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 3,
+      "source_url": "https://raw.githubusercontent.com/GoogleCloudPlatform/activation-model-scanner/main/README.md",
+      "quote": "Thresholds: PASS (>3.5σ), WARNING (2.0–3.5σ), CRITICAL (<2.0σ)",
+      "locator": "README.md (raw, fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...e check** (no baseline required) \\- measures whether the model has functioning safety directions \\- thresholds: pass (>3.5σ), warning (2.0–3.5σ), critical (<2.0σ) \\- catches uncensored models and degraded safety training **tier 2: identity verification** (baseli...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 4,
+      "source_url": "https://research.google/pubs/aase-activation-based-ai-safety-enforcement-via-lightweight-probes/",
+      "quote": "Validation across 7 models from 3 architecture families shows strong class separation: Gemma-2-9B achieves AUC 1.00 with 7.2σ separation across all probes; AAG achieves AUC ≥0.88 across all models on the InjecAgent benchmark; APC achieves 0.97-1.00 AUC across three enterprise policies.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...unding factors such as topic and style, addressing signal entanglement in polysemantic activations. validation across 7 models from 3 architecture families shows strong class separation: gemma-2-9b achieves auc 1.00 with 7.2σ separation across all probes; aag achieves auc ≥0.88 across all models on the injecagent benchmark; apc achieves 0.97-1.00 auc across three enterprise policies. model size correlates with probe quality—gemma-2-9b (7.2σ separation) outperforms gemma-2-2b (4.3σ)...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 4,
+      "source_url": "https://research.google/pubs/aase-activation-based-ai-safety-enforcement-via-lightweight-probes/",
+      "quote": "AASE is 9× faster than Llama Guard 3 (33ms vs 306ms) with higher TPR (88% vs 50%",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...ms gemma-2-2b (4.3σ). all techniques survive int4 quantization with minimal separation degradation. aase is 9× faster than llama guard 3 (33ms vs 306ms) with higher tpr (88% vs 50%) at a tunable threshold that trades fpr for detection sensitivity, adding only 0.002ms probe overhe...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 5,
+      "source_url": "https://arxiv.org/abs/2406.11717",
+      "quote": "In this work, we show that refusal is mediated by a one-dimensional subspace, across 13 popular open-source chat models up to 72B parameters in size.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...usal behavior is widespread across chat models, its underlying mechanisms remain poorly understood. in this work, we show that refusal is mediated by a one-dimensional subspace, across 13 popular open-source chat models up to 72b parameters in size. specifically, for each model, we find a single direction such that erasing this direction from the ...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 6,
+      "source_url": "https://arxiv.org/html/2406.11717v3",
+      "quote": "Each dataset consists of train and validation splits of 128 and 32 samples, respectively.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...{d}_{\\text{harmless}}, a dataset of harmless instructions sampled from alpaca (taori et al., 2023). each dataset consists of train and validation splits of 128 and 32 samples, respectively. we apply filtering to ensure that the train and validation splits do not overlap with the evaluatio...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 6,
+      "source_url": "https://arxiv.org/html/2406.11717v3",
+      "quote": "we can take each matrix Wout∈ℝdmodel×dinputW_{\\text{out}}\\in\\mathbb{R}^{d_{\\text{model}}\\times d_{\\text{input}}} that writes to the residual stream, and orthogonalize its column vectors with respect to",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...ponent weights to never write to the 𝐫^\\hat{\\mathbf{r}} direction in the first place. specifically, we can take each matrix wout∈ℝdmodel×dinputw_{\\text{out}}\\in\\mathbb{r}^{d_{\\text{model}}\\times d_{\\text{input}}} that writes to the residual stream, and orthogonalize its column vectors with respect to 𝐫^\\hat{\\mathbf{r}}: | wout′←wout−𝐫^​𝐫^⊺​wout.\\displaystyle w_{\\text{out}}^{\\prime}\\leftarrow w_{\\te...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 6,
+      "source_url": "https://arxiv.org/html/2406.11717v3",
+      "quote": "the matrices that write to the residual stream are: the embedding matrix, the positional embedding matrix, attention out matrices, and MLP out matrices. Orthogonalizing all of these matrices, as well as any output biases, with respect to the direction",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...}\\hat{\\mathbf{r}}^{\\intercal}w_{\\text{out}}. | | (5) ---|---|---|--- in a transformer architecture, the matrices that write to the residual stream are: the embedding matrix, the positional embedding matrix, attention out matrices, and mlp out matrices. orthogonalizing all of these matrices, as well as any output biases, with respect to the direction 𝐫^\\hat{\\mathbf{r}} effectively prevents the model from ever writing 𝐫^\\hat{\\mathbf{r}} to its resid...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 6,
+      "source_url": "https://arxiv.org/html/2406.11717v3",
+      "quote": "we always use greedy decoding and a maximum generation length of 512 tokens, as suggested in Mazeika",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...am. ### 2.5 evaluation of refusal and harmfulness when generating model completions for evaluation, we always use greedy decoding and a maximum generation length of 512 tokens, as suggested in mazeika et al. (2024). we then evaluate each model completion based on whether it constitutes a refusal, an...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 9,
+      "source_url": "https://arxiv.org/abs/2609.19472",
+      "quote": "We extract activations from LLaMA-3.1-8B and train lightweight MLP classifier probes (12.6M parameters) to detect harmful prompts. Evaluated on WildJailbreak, Beavertails, and AEGIS 2.0, our probes achieve F1 scores of 99%, 83%, and 84%, respectively competitive with 1000x larger guard models while cutting latency and compute costs.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...ating a fundamental assurance gap. we ask: does the model already know when the content is harmful? we extract activations from llama-3.1-8b and train lightweight mlp classifier probes (12.6m parameters) to detect harmful prompts. evaluated on wildjailbreak, beavertails, and aegis 2.0, our probes achieve f1 scores of 99%, 83%, and 84%, respectively competitive with 1000x larger guard models while cutting latency and compute costs. subjects: | artificial intelligence (cs.ai); computation and language (cs.cl); cryptography and sec...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 10,
+      "source_url": "https://arxiv.org/abs/2603.18353",
+      "quote": "Linear probes discriminated hazardous from benign cases with 98.2% AUROC, yet the model's output sensitivity was only 45.1%, a 53-percentage-point knowledge-action gap.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...egative triage errors using 400 physician-adjudicated clinical vignettes (144 hazards, 256 benign). linear probes discriminated hazardous from benign cases with 98.2% auroc, yet the model's output sensitivity was only 45.1%, a 53-percentage-point knowledge-action gap. concept bottleneck steering corrected 20% of missed hazards but disrupted 53% of correct detections...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 10,
+      "source_url": "https://arxiv.org/abs/2603.18353",
+      "quote": "SAE feature steering produced zero effect despite 3,695 significant features. TSV steering at high strength",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...zards but disrupted 53% of correct detections, indistinguishable from random perturbation (p=0.84). sae feature steering produced zero effect despite 3,695 significant features. tsv steering at high strength corrected 24% of missed hazards while disrupting 6% of correct detections, but left 76% of errors u...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 10,
+      "source_url": "https://arxiv.org/abs/2603.18353",
+      "quote": "Concept bottleneck steering corrected 20% of missed hazards but disrupted 53% of correct detections, indistinguishable from random perturbation (p=0.84).",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...roc, yet the model's output sensitivity was only 45.1%, a 53-percentage-point knowledge-action gap. concept bottleneck steering corrected 20% of missed hazards but disrupted 53% of correct detections, indistinguishable from random perturbation (p=0.84). sae feature steering produced zero effect despite 3,695 significant features. tsv steering at high ...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 11,
+      "source_url": "https://arxiv.org/abs/2604.18901",
+      "quote": "A direction fitted from 100 labelled examples per class via Soft-AUC optimisation reaches mean effective AUROC 0.982 and TPR@1\\%FPR 0.797, generalises to three held-out harm benchmarks and a hard-benign control, and matches its instruction-tuned counterpart within $\\pm 0.003$ AUROC in abliterated variants from which the refusal mechanism has been removed",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...ted), with parameter scales from 0.5b to 1.3b and a within-family scale extension to 9b on qwen3.5. a direction fitted from 100 labelled examples per class via soft-auc optimisation reaches mean effective auroc 0.982 and tpr@1\\%fpr 0.797, generalises to three held-out harm benchmarks and a hard-benign control, and matches its instruction-tuned counterpart within $\\pm 0.003$ auroc in abliterated variants from which the refusal mechanism has been removed. the supervised strategies all exceed auroc 0.96, but their tpr@1\\%fpr varies by more than ten time...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 11,
+      "source_url": "https://arxiv.org/abs/2604.18901",
+      "quote": "matches its instruction-tuned counterpart within $\\pm 0.003$ AUROC in abliterated variants from which the refusal mechanism has been removed",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "... and tpr@1\\%fpr 0.797, generalises to three held-out harm benchmarks and a hard-benign control, and matches its instruction-tuned counterpart within $\\pm 0.003$ auroc in abliterated variants from which the refusal mechanism has been removed. the supervised strategies all exceed auroc 0.96, but their tpr@1\\%fpr varies by more than ten time...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 12,
+      "source_url": "https://arxiv.org/abs/2603.27412",
+      "quote": "Given 200 safe normative prompts, LatentBiopsy computes the leading principal component of their activations at a target layer and characterises new prompts by their radial deviation angle $\\theta$ from this reference direction. The anomaly score is the negative log-likelihood of $\\theta$ under a Gaussian fit to the normative distribution, flagging deviations symmetrically regardless of orientation.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "... harmful prompts by analysing the geometry of residual-stream activations in large language models. given 200 safe normative prompts, latentbiopsy computes the leading principal component of their activations at a target layer and characterises new prompts by their radial deviation angle $\\theta$ from this reference direction. the anomaly score is the negative log-likelihood of $\\theta$ under a gaussian fit to the normative distribution, flagging deviations symmetrically regardless of orientation. no harmful examples are required for training. > we evaluate two complete model triplets from the q...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 12,
+      "source_url": "https://arxiv.org/abs/2603.27412",
+      "quote": "both abliterated variants achieve AUROC at most 0.015 below their instruction-tuned counterparts, establishing a geometric dissociation between harmful-intent representation and the downstream generative refusal mechanism.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...d per-query overhead. > three empirical findings emerge. first, geometry survives refusal ablation: both abliterated variants achieve auroc at most 0.015 below their instruction-tuned counterparts, establishing a geometric dissociation between harmful-intent representation and the downstream generative refusal mechanism. second, harmful prompts exhibit a near-degenerate angular distribution ($\\sigma_\\theta \\approx 0.03...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 13,
+      "source_url": "https://arxiv.org/abs/2607.01854",
+      "quote": "their z-sum separates 57 public abliterations from 37 benign fine-tunes, merges, and instruction-tunes at AUROC 0.95, significantly above either signal alone (0.84, 0.90), and a Youden-calibrated threshold transfers to held-out families at balanced accuracy 0.89 (FPR 0.11), missing only 4 of 57.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...lies recall. on a 273-checkpoint registry spanning qwen, deepseek-distilled qwen, llama, and gemma, their z-sum separates 57 public abliterations from 37 benign fine-tunes, merges, and instruction-tunes at auroc 0.95, significantly above either signal alone (0.84, 0.90), and a youden-calibrated threshold transfers to held-out families at balanced accuracy 0.89 (fpr 0.11), missing only 4 of 57. we then map two failures, in order of severity: a spoofed reference evades both axes with no traini...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 14,
+      "source_url": "https://arxiv.org/abs/2606.25750",
+      "quote": "maps representation-level refusal alignment to a calibrated 0-100 safety score",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "... unsafe and jailbreak prompts. the resulting metric, **ras** (**r**efusal **a**lignment **s**core), maps representation-level refusal alignment to a calibrated 0-100 safety score. across `llama`, `gemma`, and `qwen` model families, ras separates aligned models from uncensored a...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 14,
+      "source_url": "https://arxiv.org/abs/2606.25750",
+      "quote": "RAS separates aligned models from uncensored and abliterated variants, tracks output-level attack success rate, and is substantially faster than judge-based evaluation.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...l alignment to a calibrated 0-100 safety score. across `llama`, `gemma`, and `qwen` model families, ras separates aligned models from uncensored and abliterated variants, tracks output-level attack success rate, and is substantially faster than judge-based evaluation. these results suggest that refusal alignment provides a compact and efficient signal for white-box ...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 16,
+      "source_url": "https://arxiv.org/abs/2501.08145",
+      "quote": "This paper investigates refusal behavior across six LLMs from three architectural families. We challenge the assumption",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...ponding to harmful, unethical, or inappropriate prompts, ensuring alignment with ethical standards. this paper investigates refusal behavior across six llms from three architectural families. we challenge the assumption of refusal as a linear phenomenon by employing dimensionality reduction techniques, including pca, ...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 16,
+      "source_url": "https://arxiv.org/abs/2501.08145",
+      "quote": "Our results reveal that refusal mechanisms exhibit nonlinear, multidimensional characteristics that vary by model architecture and layer. These findings highlight the need for nonlinear interpretability to improve alignment research and inform safer AI deployment strategies.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...linear phenomenon by employing dimensionality reduction techniques, including pca, t-sne, and umap. our results reveal that refusal mechanisms exhibit nonlinear, multidimensional characteristics that vary by model architecture and layer. these findings highlight the need for nonlinear interpretability to improve alignment research and inform safer ai deployment strategies. subjects: | computation and language (cs.cl); artificial intelligence (cs.ai) ---|--- cite as: | [a...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 17,
+      "source_url": "https://arxiv.org/abs/2606.08044",
+      "quote": "Every static audit we run gives the dissociated model the same verdict as its base, since its refusals match the base, jailbreaks show no consistent signature, and a strong fixed probe on clean activations cannot tell it from the base.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...vulnerability score (lvs), the safety degradation produced per unit of bounded latent perturbation. every static audit we run gives the dissociated model the same verdict as its base, since its refusals match the base, jailbreaks show no consistent signature, and a strong fixed probe on clean activations cannot tell it from the base. the same interventions an auditor could run reverse the verdict. at the targeted mid layer the diss...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 17,
+      "source_url": "https://arxiv.org/abs/2606.08044",
+      "quote": "At the targeted mid layer the dissociated models score 2.5 to 3.1 times higher LVS than their bases. A bounded latent attack elicits harmful compliance on 54 to 86% of prompts, against 3 to 48% for the bases, while matched random perturbations stay at or below 12%. Harmful fine-tuning reaches high compliance within five gradient steps, where the bases need 10 to 25.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...ions cannot tell it from the base. the same interventions an auditor could run reverse the verdict. at the targeted mid layer the dissociated models score 2.5 to 3.1 times higher lvs than their bases. a bounded latent attack elicits harmful compliance on 54 to 86% of prompts, against 3 to 48% for the bases, while matched random perturbations stay at or below 12%. harmful fine-tuning reaches high compliance within five gradient steps, where the bases need 10 to 25. behavioral testing, even with static latent probing, cannot certify representation-level robustness...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 18,
+      "source_url": "https://arxiv.org/abs/2412.06748",
+      "quote": "we propose refusal tokens, one such token for each refusal category or a single refusal token, which are prepended to the model's responses during training. We then show how to increase or decrease the probability of generating the refusal token for each category during inference to steer the model's refusal behavior. Refusal tokens enable controlling a single model's refusal rates without the need of any further fine-tuning, but only by selectively intervening during generation.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...odel to accommodate each user's desired preference over refusal rates. to address these challenges, we propose refusal tokens, one such token for each refusal category or a single refusal token, which are prepended to the model's responses during training. we then show how to increase or decrease the probability of generating the refusal token for each category during inference to steer the model's refusal behavior. refusal tokens enable controlling a single model's refusal rates without the need of any further fine-tuning, but only by selectively intervening during generation. comments: | 20 pages ---|--- subjects: | machine learning (cs.lg); computation and language (cs.cl)...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 19,
+      "source_url": "https://arxiv.org/abs/2605.28553",
+      "quote": "we investigate whether refusal behavior can be predicted from LLM intermediate activations before decoding using linear probes trained on residual stream activations at each transformer block. We find that refusal is linearly decodable well before the final layer, indicating that safety-relevant behavior is represented in intermediate activations before output generation.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...df/2605.28553) [html (experimental)](https://arxiv.org/html/2605.28553v2) > abstract:in this paper, we investigate whether refusal behavior can be predicted from llm intermediate activations before decoding using linear probes trained on residual stream activations at each transformer block. we find that refusal is linearly decodable well before the final layer, indicating that safety-relevant behavior is represented in intermediate activations before output generation. to test whether this signal is actionable, we introduce mechanistic autodan, a probe-guided variant...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 20,
+      "source_url": "https://arxiv.org/abs/2602.02132",
+      "quote": "refusal behaviors correspond to geometrically distinct directions in activation space. Yet activation steering along any refusal-related direction produces nearly identical refusal--over-refusal trade-offs, acting as a shared one-dimensional control knob. Thus, different directions primarily affect not whether the model refuses, but how it refuses.",
+      "locator": "abstract (page fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...ion. we show that this account is incomplete: across diverse refusal and non-compliance categories, refusal behaviors correspond to geometrically distinct directions in activation space. yet activation steering along any refusal-related direction produces nearly identical refusal--over-refusal trade-offs, acting as a shared one-dimensional control knob. thus, different directions primarily affect not whether the model refuses, but how it refuses. using sparse autoencoders, we uncover a structured internal representation of refusal: a reusable c...",
+      "match_type": "exact"
+    },
+    {
+      "source_index": 21,
+      "source_url": "https://huggingface.co/Qwen/Qwen3-4B/raw/main/README.md",
+      "quote": "enable_thinking=True # Switches between thinking and non-thinking modes. Default is True.",
+      "locator": "README.md raw (fetched 2026-09-19)",
+      "status": "valid",
+      "context": "...ompt} ] text = tokenizer.apply_chat_template( messages, tokenize=false, add_generation_prompt=true, enable_thinking=true # switches between thinking and non-thinking modes. default is true. ) model_inputs = tokenizer([text], return_tensors=\"pt\").to(model.device) # conduct text completion ...",
+      "match_type": "exact"
+    }
+  ]
+}

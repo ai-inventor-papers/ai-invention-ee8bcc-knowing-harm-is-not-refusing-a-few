@@ -1,0 +1,82 @@
+{
+ "basu_abs": {
+  "url": "https://arxiv.org/abs/2603.18353",
+  "chars": 8591,
+  "ok": true
+ },
+ "llorente_harm_abs": {
+  "url": "https://arxiv.org/abs/2604.18901",
+  "chars": 8392,
+  "ok": true
+ },
+ "latentbiopsy_abs": {
+  "url": "https://arxiv.org/abs/2603.27412",
+  "chars": 8714,
+  "ok": true
+ },
+ "jiang_abs": {
+  "url": "https://arxiv.org/abs/2606.08044",
+  "chars": 8619,
+  "ok": true
+ },
+ "ras_abs": {
+  "url": "https://arxiv.org/abs/2606.25750",
+  "chars": 7597,
+  "ok": true
+ },
+ "hildebrant_abs": {
+  "url": "https://arxiv.org/abs/2501.08145",
+  "chars": 7069,
+  "ok": true
+ },
+ "refusal_tokens_abs": {
+  "url": "https://arxiv.org/abs/2412.06748",
+  "chars": 8516,
+  "ok": true
+ },
+ "khatri_abs": {
+  "url": "https://arxiv.org/abs/2609.19472",
+  "chars": 7522,
+  "ok": true
+ },
+ "refusal_before_decoding_abs": {
+  "url": "https://arxiv.org/abs/2605.28553",
+  "chars": 8171,
+  "ok": true
+ },
+ "joad_abs": {
+  "url": "https://arxiv.org/abs/2602.02132",
+  "chars": 7846,
+  "ok": true
+ },
+ "hurtado_abs": {
+  "url": "https://arxiv.org/abs/2607.01854",
+  "chars": 7605,
+  "ok": true
+ },
+ "arditi_abs": {
+  "url": "https://arxiv.org/abs/2406.11717",
+  "chars": 8115,
+  "ok": true
+ },
+ "arditi_html": {
+  "url": "https://arxiv.org/html/2406.11717v3",
+  "chars": 49999,
+  "ok": true
+ },
+ "ams_zenodo": {
+  "url": "https://zenodo.org/records/19501951",
+  "chars": 6984,
+  "ok": true
+ },
+ "ams_blog": {
+  "url": "https://opensource.googleblog.com/2026/04/introducing-ams-activation-based-model-scanner-for-open-weight-llm-safety-verification.html",
+  "chars": 34090,
+  "ok": true
+ },
+ "qwen3_readme": {
+  "url": "https://huggingface.co/Qwen/Qwen3-4B/raw/main/README.md",
+  "chars": 15779,
+  "ok": true
+ }
+}

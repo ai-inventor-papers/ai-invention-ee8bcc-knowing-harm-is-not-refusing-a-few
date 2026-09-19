@@ -1,0 +1,262 @@
+[
+ {
+  "query": "all:\"refusal direction\" AND all:\"score\"",
+  "label": "arXiv refusal-direction score",
+  "res": {
+   "total": "8",
+   "hits": [
+    [
+     "2605.03095v1",
+     "Revisiting JBShield: Breaking and Rebuilding Representation-Level Jailbreak Defenses"
+    ],
+    [
+     "2608.18093v1",
+     "Abliteration Mitigation via Refusal Aliases"
+    ],
+    [
+     "2606.25750v1",
+     "RAS: Measuring LLM Safety Through Refusal Alignment"
+    ],
+    [
+     "2605.17413v1",
+     "Ablating Safety: Mechanisms for Removing Alignment in Language Models for Security Applications"
+    ],
+    [
+     "2603.27412v1",
+     "The Geometry of Harmful Intent: Training-Free Anomaly Detection via Angular Deviation in LLM Residual Streams"
+    ],
+    [
+     "2605.20759v1",
+     "Rethinking Fraud Safety Evaluation: Multi-Round Attacks Reveal Safety-Utility Tradeoffs in Graph-Context LLM D"
+    ]
+   ]
+  }
+ },
+ {
+  "query": "all:\"safety metric\" AND all:\"few-shot\"",
+  "label": "arXiv safety metric few-shot",
+  "res": {
+   "total": "0",
+   "hits": []
+  }
+ },
+ {
+  "query": "all:\"compliance\" AND all:\"activation\" AND all:\"refusal\"",
+  "label": "arXiv compliance activation refusal",
+  "res": {
+   "total": "31",
+   "hits": [
+    [
+     "2607.14147v1",
+     "Breaking Refusal in the First Half: A Mechanistic Study of the Prefill Jailbreak"
+    ],
+    [
+     "2512.16602v3",
+     "Refusal Steering: Fine-grained Control over LLM Refusal Behaviour for Sensitive Topics"
+    ],
+    [
+     "2605.26772v1",
+     "Beyond a Single Direction: Chain-of-Thought Disrupts Simple Steering of Refusal"
+    ],
+    [
+     "2510.08646v2",
+     "Mitigating Over-Refusal in Aligned Large Language Models via Inference-Time Activation Energy"
+    ],
+    [
+     "2602.02132v2",
+     "There Is More to Refusal in Large Language Models than a Single Direction"
+    ],
+    [
+     "2502.09755v4",
+     "Jailbreak Attack Initializations as Extractors of Compliance Directions"
+    ]
+   ]
+  }
+ },
+ {
+  "query": "all:\"refusal rate\" AND all:\"activation\"",
+  "label": "arXiv refusal rate activation",
+  "res": {
+   "total": "23",
+   "hits": [
+    [
+     "2505.20309v3",
+     "Guiding Giants: Lightweight Controllers for Weighted Activation Steering in LLMs"
+    ],
+    [
+     "2510.08646v2",
+     "Mitigating Over-Refusal in Aligned Large Language Models via Inference-Time Activation Energy"
+    ],
+    [
+     "2606.26161v1",
+     "Refusal Lives Downstream of Persona in Chat Models"
+    ],
+    [
+     "2409.15154v1",
+     "RMCBench: Benchmarking Large Language Models' Resistance to Malicious Code"
+    ],
+    [
+     "2601.08489v1",
+     "Surgical Refusal Ablation: Disentangling Safety from Intelligence via Concept-Guided Spectral Cleaning"
+    ],
+    [
+     "2609.05794v1",
+     "Bait-and-Recover: Poisoning Internal Refusal Signals to Defend LLMs against White-Box Editing Jailbreaks"
+    ]
+   ]
+  }
+ },
+ {
+  "query": "all:\"knowledge-action gap\"",
+  "label": "arXiv knowledge-action gap",
+  "res": {
+   "total": "6",
+   "hits": [
+    [
+     "2601.12974v1",
+     "Bridging the Knowledge-Action Gap by Evaluating LLMs in Dynamic Dental Clinical Scenarios"
+    ],
+    [
+     "2603.18353v1",
+     "Interpretability without actionability: mechanistic methods cannot correct language model errors despite near-"
+    ],
+    [
+     "2601.07972v1",
+     "Knowing But Not Doing: Convergent Morality and Divergent Action in LLMs"
+    ],
+    [
+     "2605.01564v3",
+     "The TripleA Principle: Making Knowledge Actionable, Applicable, and Auditable in Post-FAIR Infrastructures"
+    ],
+    [
+     "2603.22779v2",
+     "KARMA: Knowledge-Action Regularized Multimodal Alignment for Personalized Search at Taobao"
+    ],
+    [
+     "2608.02657v2",
+     "Your Agentic LLMs Secretly Encode Indirect Prompt-Injection Exposure in Hidden States"
+    ]
+   ]
+  }
+ },
+ {
+  "query": "all:\"label-free\" AND all:\"safety\" AND all:\"language model\"",
+  "label": "arXiv label-free safety",
+  "res": {
+   "total": "8",
+   "hits": [
+    [
+     "2605.00326v1",
+     "Prompt-Induced Score Variance in Zero-Shot Binary Vision-Language Safety Classification"
+    ],
+    [
+     "2603.08486v2",
+     "Visual Self-Fulfilling Alignment: Shaping Safety-Oriented Personas via Threat-Related Images"
+    ],
+    [
+     "2608.14089v1",
+     "Regime-Conditional Verification: Correctness Estimation for Adapting and Monitoring Safety Classifiers"
+    ],
+    [
+     "2507.04446v4",
+     "Sampling-aware Adversarial Attacks Against Large Language Models"
+    ],
+    [
+     "2608.17202v1",
+     "Fool's Gold: Defensive Deception Against Safety-Removal Attacks on Open-Weight Models"
+    ],
+    [
+     "2606.15980v2",
+     "Do Activation Monitors Survive Model Updates? Benchmarking, Predicting, and Repairing Activation-Monitor Stale"
+    ]
+   ]
+  }
+ },
+ {
+  "query": "all:\"activation scanner\"",
+  "label": "arXiv activation scanner",
+  "res": {
+   "total": "4",
+   "hits": [
+    [
+     "2105.13592v1",
+     "Chhoyhopper: A Moving Target Defense with IPv6"
+    ],
+    [
+     "2211.02024v2",
+     "fMRI from EEG is only Deep Learning away: the use of interpretable DL to unravel EEG-fMRI relationships"
+    ],
+    [
+     "1911.10127v2",
+     "BlendedMVS: A Large-scale Dataset for Generalized Multi-view Stereo Networks"
+    ],
+    [
+     "2203.08034v1",
+     "A Noise-level-aware Framework for PET Image Denoising"
+    ]
+   ]
+  }
+ },
+ {
+  "query": "all:\"refusal\" AND all:\"abliteration\"",
+  "label": "arXiv refusal abliteration",
+  "res": {
+   "total": "24",
+   "hits": [
+    [
+     "2607.17427v1",
+     "Abliteration Is Not a Scalpel: Off-Target Effects of Refusal Removal on Decision Disposition Across Model Fami"
+    ],
+    [
+     "2608.18093v1",
+     "Abliteration Mitigation via Refusal Aliases"
+    ],
+    [
+     "2603.22061v1",
+     "On the Failure of Topic-Matched Contrast Baselines in Multi-Directional Refusal Abliteration"
+    ],
+    [
+     "2606.05396v1",
+     "Willing but Unable: Separating Refusal from Capability in Code LLMs via Abliteration"
+    ],
+    [
+     "2505.19056v2",
+     "An Embarrassingly Simple Defense Against LLM Abliteration Attacks"
+    ],
+    [
+     "2512.13655v2",
+     "Comparative Analysis of LLM Abliteration Methods: A Cross-Architecture Evaluation"
+    ]
+   ]
+  }
+ },
+ {
+  "query": "all:\"safety evaluation\" AND all:\"activations\" AND all:\"open-weight\"",
+  "label": "arXiv safety eval activations open-weight",
+  "res": {
+   "total": "5",
+   "hits": [
+    [
+     "2608.26222v1",
+     "NeuronFuzz: Safety Neuron Guided Fuzzing for LLM Safety Evaluation"
+    ],
+    [
+     "2606.17257v1",
+     "Pulling The REINS: Training-Free Safety Alignment of Video Diffusion Models via Representation Steering"
+    ],
+    [
+     "2505.14617v3",
+     "The Hawthorne Effect in Reasoning Models: Evaluating and Steering Test Awareness"
+    ],
+    [
+     "2509.13333v2",
+     "Evaluation Awareness Scales Predictably in Open-Weights Large Language Models"
+    ],
+    [
+     "2406.14598v2",
+     "SORRY-Bench: Systematically Evaluating Large Language Model Safety Refusal"
+    ]
+   ]
+  }
+ }
+]

@@ -1,0 +1,564 @@
+{
+ "title": "Prior-Art Check for a Few-Prompt Safety Score",
+ "note": "Companion detail file to research_out.json (which carries the schema-required answer/sources/follow_up_questions/summary fields). Contains the full verification table, baseline specs, HF checkpoint audit, saturation log and novelty verdict. All findings dated 2026-09-19.",
+ "verification_table": [
+  {
+   "claim_id": "V1",
+   "claim_text": "AMS-style activation scanner (Messenger 2026): existence; sigma computation (contrastive prompt pairs, probe, separation in standard deviations); 14-configuration validation set; best r = -0.546 correlation with behavioral compliance",
+   "status": "VERIFIED primary (existence, sigma design, 14-config validation); r = -0.546 UNVERIFIED (absent from all accessible texts; paper PDF blocked by Zenodo HTTP 403)",
+   "primary_source": "Zenodo record 19501951 (Messenger 2026-04-10); Google Open Source Blog (2026-04-27); GitHub GoogleCloudPlatform/activation-model-scanner",
+   "url": "https://zenodo.org/records/19501951",
+   "quote": "\"Safe models exhibit strong class separation (4-8σ) between harmful and benign content; models with removed or degraded safety training show collapsed separation (<2σ). Using contrastive prompt pairs and direction vector analysis, AMS performs model-level verification rather than prompt-level classification.\"",
+   "numbers": "14 configurations; 3 families; 3 quant levels; instruction-tuned 3.8-8.4 sigma; uncensored 1.1-1.3; abliterated 3.33 (WARNING); base 0.69; quant drift <5%; 10-40 s/GPU; thresholds PASS >3.5 / WARNING 2.0-3.5 / CRITICAL <2.0; r = -0.546 NOT FOUND (blog grep 0 matches)",
+   "implication": "Drop r = -0.546 as a comparison target; use the experiment's own within-zoo scanner-vs-behavior rho instead. AMS is a per-model structure check needing labeled contrast pairs; the hypothesis's label-free few-prompt per-model refusal-rate prediction is not covered by it."
+  },
+  {
+   "claim_id": "V2",
+   "claim_text": "Arditi et al. 2024 'Refusal in Language Models Is Mediated by a Single Direction' (expected arXiv 2406.11717)",
+   "status": "VERIFIED primary (arXiv 2406.11717 v3 2024-10-30; NeurIPS 2024 proceedings version exists)",
+   "primary_source": "arXiv 2406.11717 (abstract + HTML v3 full text)",
+   "url": "https://arxiv.org/abs/2406.11717",
+   "quote": "\"Each dataset consists of train and validation splits of 128 and 32 samples, respectively.\" and \"we can take each matrix that writes to the residual stream, and orthogonalize its column vectors with respect to\"",
+   "numbers": "13 models 1.8-72B; harmful 128+32 (AdvBench, MaliciousInstruct, TDC2023, HarmBench), harmless 128+32 (Alpaca) - NOT the guessed 74/54; direction = DIFFERENCE-IN-MEANS (grep 'PCA|principal component' = 0 matches in the full HTML; the hypothesis's 'PCA top component' is wrong); readout at post-instruction positions (mostly i*=-1); Llama-2 7B l*/L = 14/32, Llama-3 8B i*=-5 l*=12/32, Gemma 7B 14/28, Qwen 1.8B 15/24; W' = W - rhat*rhat^T*W over embedding, positional embedding, attention-out, MLP-out matrices and output biases; greedy decoding 512 tokens; orthogonalized Llama-2 7B ASR 22.6 (79.9 without system prompt)",
+   "implication": "B1 baseline spec complete (diff-of-means, single-vector selection via bypass/induce/kl filters with layer < 0.8L, weight orthogonalization). Do NOT report PCA or variance share. Code: github.com/andyrdt/refusal_direction (official) and Sumandora/remove-refusals-with-transformers (community, 2202 stars)."
+  },
+  {
+   "claim_id": "V3",
+   "claim_text": "Khatri 2026 latent safety probes (per-prompt classification, insensitive to abliteration, flat around 0.98) plus a claimed reproducibility study",
+   "status": "VERIFIED primary (paper exists); MIS-CHARACTERIZED in hypothesis (no abliteration or 0.98 claims in it); reproducibility study NOT_FOUND",
+   "primary_source": "arXiv 2609.19472 (Khatri, Prabhu, Neogi; IEEE DSN-W 2026 pp. 48-52)",
+   "url": "https://arxiv.org/abs/2609.19472",
+   "quote": "\"We extract activations from LLaMA-3.1-8B and train lightweight MLP classifier probes (12.6M parameters) to detect harmful prompts.\"",
+   "numbers": "12.6M-param MLP probes on LLaMA-3.1-8B; F1 99/83/84 on WildJailbreak, BeaverTails, AEGIS 2.0; NO abliteration experiments in the abstract; the flat ~0.98-across-abliteration claim belongs to Llorente-Saguer 2604.18901 (+-0.003 AUROC) and 2603.27412/LatentBiopsy (<=0.015)",
+   "implication": "Re-anchor the flat-probe expectation to Llorente-Saguer and LatentBiopsy; cite Khatri only for 'harm decodable from latent states and usable as guardrail'; do not cite a reproducibility study that was not found."
+  },
+  {
+   "claim_id": "V4",
+   "claim_text": "Knowledge-action gap (hypothesis attributes it to Llorente-Saguer 2026)",
+   "status": "VERIFIED primary - the numbers belong to Basu et al. 2603.18353 (2026-03-18); Llorente-Saguer is REAL but his papers are 2604.18901 (supervised harm-directions) and 2603.27412 (LatentBiopsy), not the knowledge-action work",
+   "primary_source": "Basu, Patel, Sheth, Muralidharan, Elamaran, Kinra, Morgan, Batniji - 'Interpretability without actionability', arXiv 2603.18353",
+   "url": "https://arxiv.org/abs/2603.18353",
+   "quote": "\"Linear probes discriminated hazardous from benign cases with 98.2% AUROC, yet the model's output sensitivity was only 45.1%, a 53-percentage-point knowledge-action gap.\"",
+   "numbers": "400 physician-adjudicated vignettes (144 hazards, 256 benign); 98.2% AUROC / 45.1% sensitivity / 53-pp gap; Steerling-8B corrected 20% of missed hazards but disrupted 53% of correct detections (p=0.84); SAE steering zero effect despite 3,695 significant features; TSV high-strength steering corrected 24%, disrupted 6%, left 76% uncorrected; Qwen 2.5 7B Instruct + Steerling-8B; code github.com/sanjaybasu/interpretability-triage",
+   "implication": "B5 knowledge-side control anchor. The 98.2/45.1 result is ONE domain (clinical triage) and ONE family (Qwen2.5); zoo-wide flatness is a hypothesis claim to test. A dental-scenario knowledge-action paper exists (2601.12974, title-level via arXiv API)."
+  },
+  {
+   "claim_id": "V5",
+   "claim_text": "Hildebrant 2025 nonlinear perspectives (six models, descriptive, no scalar metric, no abliterated class)",
+   "status": "VERIFIED primary",
+   "primary_source": "arXiv 2501.08145 (Hildebrandt, Maier, Krauss, Schilling - FAU Erlangen), 2025-01-14",
+   "url": "https://arxiv.org/abs/2501.08145",
+   "quote": "\"This paper investigates refusal behavior across six LLMs from three architectural families.\" and \"Our results reveal that refusal mechanisms exhibit nonlinear, multidimensional characteristics that vary by model architecture and layer.\"",
+   "numbers": "six LLMs, three families; PCA, t-SNE, UMAP; no scalar score, no abliterated class - matches the hypothesis characterization",
+   "implication": "Motivates the index's per-layer profile and max-over-layers design; descriptive, not a quantitative baseline."
+  },
+  {
+   "claim_id": "V6",
+   "claim_text": "Jiang 2026 'When behavioral safety evaluation fails' / dissociated models",
+   "status": "VERIFIED primary (exact title: 'When Behavioral Safety Evaluation Fails: A Representation-Level Perspective')",
+   "primary_source": "arXiv 2606.08044 (Jiang, Gjolbye, Zhang, Koyejo); v1 2026-06-06, v2 2026-08-04",
+   "url": "https://arxiv.org/abs/2606.08044",
+   "quote": "\"Every static audit we run gives the dissociated model the same verdict as its base, since its refusals match the base, jailbreaks show no consistent signature, and a strong fixed probe on clean activations cannot tell it from the base.\"",
+   "numbers": "dissociated models from Gemma 2 2B, Llama 3.2 3B, Qwen 2.5 3B; LVS 2.5-3.1x higher at targeted mid layer; bounded latent attack 54-86% compliance vs 3-48% bases; random perturbations <=12%; harmful fine-tuning reaches high compliance in 5 gradient steps vs 10-25 for bases",
+   "implication": "Scopes out adversarially dissociated models: static audits are evadable even with fixed probes; the index's action-side readout (refusal-vs-compliance logits at the first generated position) is complementary and should be tested on dissociated-style constructions."
+  },
+  {
+   "claim_id": "V7",
+   "claim_text": "Refusal tokens (2024) / template-level per-model refusal-rate control",
+   "status": "VERIFIED primary (paper exists); it serves a DIFFERENT purpose (training-time calibration tokens), not per-model refusal detection",
+   "primary_source": "Jain et al., 'Refusal Tokens: A Simple Way to Calibrate Refusals in Large Language Models', arXiv 2412.06748 (Dec 2024)",
+   "url": "https://arxiv.org/abs/2412.06748",
+   "quote": "\"we propose refusal tokens, one such token for each refusal category or a single refusal token, which are prepended to the model's responses during training\"",
+   "numbers": "none required; repo neelsjain/refusal-tokens",
+   "implication": "The experiment's refusal-template log-prob baseline is its own design (fixed phrase set + first-generated-position log-prob); cite 2412.06748 as mechanism evidence; the Zou-2023-style keyword list source must be verified during the experiment."
+  },
+  {
+   "claim_id": "V8-EXTRA",
+   "claim_text": "Flat ~0.98 probes across base/aligned/abliterated + extension of the knowledge-action gap beyond the clinical domain",
+   "status": "PARTIAL: flat-probe-across-abliteration VERIFIED via Llorente-Saguer (0.982 +-0.003) and LatentBiopsy (>=0.937, <=0.015); Basu beyond clinical: only a dental-scenario title found (2601.12974, arXiv API title-level)",
+   "primary_source": "arXiv 2604.18901 (Llorente-Saguer) and arXiv 2603.27412 (LatentBiopsy)",
+   "url": "https://arxiv.org/abs/2604.18901",
+   "quote": "\"A direction fitted from 100 labelled examples per class via Soft-AUC optimisation reaches mean effective AUROC 0.982 and TPR@1%FPR 0.797\" and \"matches its instruction-tuned counterpart within ±0.003 AUROC in abliterated variants from which the refusal mechanism has been removed\"",
+   "numbers": "12 models / 4 families (Qwen2.5, Qwen3.5, Llama-3.2, Gemma-3) / 3 alignment variants / 0.5-1.3B plus 9B extension; LatentBiopsy: 200 safe prompts, AUROC >=0.937, abliteration gap <=0.015, sigma_theta 0.03 rad vs 0.27 rad normative",
+   "implication": "The flat-probe expectation now has real anchors (0.982/0.003; 0.937/0.015), both per-prompt and Qwen-heavy; the per-model behavioral-refusal-rate prediction from few prompts remains untested. Treat 0.98-flatness as the claim to test; Basu 98.2% is the single-model anchor."
+  },
+  {
+   "claim_id": "V9-EXTRA (nearest prior art: RAS)",
+   "claim_text": "A per-model refusal-alignment safety score with behavioral correlation already exists (RAS / SafeVec, 2026)",
+   "status": "VERIFIED primary",
+   "primary_source": "arXiv 2606.25750 (Huang, Chen, Yu, Lee; NYCU / Hon Hai), 2026-06-24",
+   "url": "https://arxiv.org/abs/2606.25750",
+   "quote": "\"Given a safety-aligned reference model, SafeVec extracts refusal directions and scores a target model according to how strongly its hidden states align with these directions under unsafe and jailbreak prompts. The resulting metric, RAS (Refusal Alignment Score), maps representation-level refusal alignment to a calibrated 0-100 safety score.\"",
+   "numbers": "calibrated 0-100 RAS; requires a reference aligned model + three LABELED prompt sets (safe / unsafe / jailbreak); separates aligned/uncensored/abliterated on Llama, Gemma, Qwen; tracks output-level attack success rate; substantially faster than judge-based evaluation",
+   "implication": "RAS occupies the label-rich per-model refusal-alignment-score lane. The hypothesis's distinct slot is label-FREE (or 0-few-prompt) per-MODEL behavioral refusal-RATE prediction. The experiment must position against RAS; label-freedom is the differentiator."
+  },
+  {
+   "claim_id": "V10-EXTRA (contests to single-direction framing)",
+   "claim_text": "Single-direction assumptions are contested (refusal is multi-directional; directions are protocol-dependent)",
+   "status": "VERIFIED primary",
+   "primary_source": "Joad et al. 2602.02132 (EMNLP 2026 main track) and Llorente-Saguer 2604.18901",
+   "url": "https://arxiv.org/abs/2602.02132",
+   "quote": "\"refusal behaviors correspond to geometrically distinct directions in activation space\" and \"different directions primarily affect not whether the model refuses, but how it refuses.\"",
+   "numbers": "Joad: refusal categories map to distinct refusal directions; Llorente-Saguer: max-pool vs last-token pooling protocols recover directions 73 degrees apart; Hurtado abliteration audit (2607.01854): z-sum AUROC 0.95 vs 0.84/0.90 single signals on a 273-checkpoint registry, balanced accuracy 0.89 (FPR 0.11), missing 4 of 57",
+   "implication": "Frame the index as reading a PROTOCOL-SPECIFIC direction (first PC of harm decision states), not 'the' refusal direction; report sensitivity to pooling and hook position; cite Joad and Llorente-Saguer on protocol dependence; Hurtado's audit is an alternate per-model signal to compare against."
+  }
+ ],
+ "baseline_specs": {
+  "arditi_2024": {
+   "inputs": "model (HF transformers), model-specific chat template, harmful prompt set (AdvBench / HarmBench / TDC2023 / MaliciousInstruct style), harmless prompt set (Alpaca style); paper uses 128 train + 32 validation per class; >=64/class recommended for stable directions",
+   "steps": [
+    "Hook residual-stream activations at the post-instruction token positions (typically the LAST user token, i*=-1) for every layer",
+    "mu_i(l) = mean activation over harmful train set; nu_i(l) = mean over harmless train set; r_i(l) = mu - nu (difference-in-means; NO PCA in the paper)",
+    "Select the single best vector (i*, l*) using the paper's filter: bypass_score (ablating the direction must raise compliance), induce_score (adding it must raise refusal), kl_score < 0.1, layer fraction l*/L < 0.8 (paper Appendix C.1; Table 5: Llama-2 7B i*=-1 l*=14/32, Llama-3 8B i*=-5 l*=12/32)",
+    "Behavioral intervention: directional ablation x' = x - rhat*rhat^T*x at every residual stream position",
+    "Weight orthogonalization (abliteration): for every matrix W writing to the residual stream, W' = W - rhat*rhat^T*W: embedding, positional embedding, attention out, MLP out matrices, plus output biases",
+    "Evaluate with greedy decoding, max 512 tokens; label refusal vs compliance from the first tokens of generations"
+   ],
+   "expected": "aligned chat models have a strong direction (e.g. Llama-2 7B bypass -5.295); base and abliterated models lack it; orthogonalized Llama-2 7B ASR 22.6 (79.9 without system prompt); adding the direction induces refusal on ~all 100 Alpaca instructions",
+   "code_repos": [
+    "https://github.com/andyrdt/refusal_direction",
+    "https://github.com/Sumandora/remove-refusals-with-transformers"
+   ],
+   "notes": "The hypothesis's 'PCA top component / variance share' is wrong for this method; report diff-of-means only."
+  },
+  "ams_scanner_sigma": {
+   "status": "Primary source partially inaccessible (Zenodo PDF HTTP 403); sigma recipe marked 're-implemented from the published description'",
+   "published_facts": "AMS measures direction-vector separation (harmful vs benign) in standard deviations per concept (harmful_content, injection_resistance, refusal_capability, optionally truthfulness); thresholds PASS >3.5, WARNING 2.0-3.5, CRITICAL <2.0; validated on 14 model configurations (3 families, 3 quant levels); 10-40 s scan per model on GPU; builds on AASE paired-contrastive probes (Gemma-2-9B 7.2 sigma + AUC 1.00; Gemma-2-2B 4.3 sigma)",
+   "recipe": [
+    "Per model: k >= 8 harmful and k >= 8 benign chat-templated prompts",
+    "Per layer l: fit a linear probe (logistic regression) on residual states at the decision position (last user token) distinguishing harmful vs benign",
+    "sigma_l = (mean probe score harm - mean probe score benign) / pooled std (class separation in standard deviations)",
+    "Aggregate over layers: per-concept max and mean sigma; per-model scalar per concept (report harmful_content and refusal_capability)",
+    "Zoo-level: Spearman rho between per-model sigma and the experiment's held-out measured behavioral refusal rate"
+   ],
+   "published_numbers": "instruct 3.8-8.4 sigma (README table variant 4.7-8.4); uncensored 1.1-1.3; abliterated 3.33; base 0.69; quantization drift <5%",
+   "caveat": "r = -0.546 scanner-vs-compliance UNVERIFIED (absent from blog/README/Zenodo abstract; paper PDF 403). Defensible comparison: the experiment's own within-zoo scanner-vs-behavior rho. Do not claim to beat -0.546."
+  },
+  "latent_probe": {
+   "inputs": "harmful + benign probe prompts (the 12+12 pool), model, chat template",
+   "steps": [
+    "Hook residual-stream state at the decision position (last user token) per layer (at least the last layer and the mid layer used for the refusal direction)",
+    "Linear probe (logistic regression or linear head) fit on states vs labels (harmful/benign)",
+    "Leakage control MANDATORY: the index and the probe share the 12+12 pool - use 5-fold CV over prompts or a separate held-out pool; report AUROC + accuracy + bootstrap CI over prompts",
+    "Compare across base / aligned / abliterated within each family"
+   ],
+   "published_expectations": "Basu 98.2% AUROC (single model, clinical); Llorente-Saguer 0.982 mean AUROC with +-0.003 abliteration delta (12 models, 100 labels/class); LatentBiopsy >=0.937 (training-free, 200 safe prompts)",
+   "notes": "Flat ~0.98 across the zoo is the hypothesis's claim to test; 0.982/0.003 and 0.937/0.015 are the closest published anchors."
+  },
+  "refusal_template_lp": {
+   "definition": "Per chat-templated harmful prompt, score the log-prob of a fixed refusal phrase set at the FIRST generated position (after disabling thinking for Qwen3); per-model scalar = mean over prompts; variant: probability mass on refusal-leading first tokens when present in the vocabulary",
+   "phrase_set": "experiment decision, e.g. ['I am sorry', 'Sorry', 'I cannot', 'I apologize', 'As an AI', 'I am unable'] with a per-family phrase-to-tokenization rule (first-token logit sum over phrase variants); refusal-token variant conceptually anchored by Jain et al. 2412.06748",
+   "notes": "Keyword-heuristic lists (Zou-2023-style) are standard in refusal detection; verify the specific list source during the experiment; do not cite a paper for the list without checking it.",
+   "pitfall": "Qwen3 thinking mode: the model card README states enable_thinking=True is DEFAULT, so the first generated token is a think/control token and position-0 refusal logits are ill-defined; disable thinking or shift the readout position."
+  },
+  "knowledge_control": {
+   "definition": "Same probe as latent_probe on the decision states; the Basu contrast (98.2% AUROC internal vs 45.1% output sensitivity, 53-pp gap) is the published knowledge-vs-behavior point; the experiment's held-out refusal-rate measurement is its analog of output sensitivity",
+   "expected": "Abliterated models should keep high probe AUROC (~0.98-class, per Llorente-Saguer +-0.003 and LatentBiopsy <=0.015) while their behavioral refusal rate collapses; the probe-behavior dissociation IS the knowledge-action gap made synthetic",
+   "literature_anchors": [
+    "Basu 2603.18353 (98.2 / 45.1)",
+    "Llorente-Saguer 2604.18901 (0.982 / 0.003)",
+    "LatentBiopsy 2603.27412 (0.937 / 0.015)"
+   ]
+  },
+  "index_design_notes": {
+   "decision_state": "residual-stream vector at the last user-token position, per layer",
+   "per_layer_index": "per layer: first PC of the 12 harmful decision states; project all prompts onto it; r_layer = correlation across prompts between the projection and the refusal-vs-compliance logit difference at the first generated position",
+   "index": "max over layers plus the full per-layer profile (motivated by Hildebrandt's nonlinearity finding and Arditi's per-layer sweep)",
+   "few_prompt_variant": "4-prompt subsampling of the 12+12 pool with bootstrap CI over prompt subsets",
+   "pitfalls": [
+    "Qwen3 thinking mode (enable_thinking=True default): first generated token is a think/control token - disable thinking or shift the readout position",
+    "refusal-vs-compliance logit difference needs a per-family vocabulary definition (e.g., top refusal-phrase first-token logit minus top compliance-phrase first-token logit) - OPEN QUESTION, see follow_ups",
+    "single-direction framing is contested (Joad 2602.02132; Llorente-Saguer pooling 73 degrees apart): read a protocol-specific direction and report pooling/hook-position sensitivity"
+   ]
+  }
+ },
+ "hf_checkpoints": [
+  {
+   "repo_id": "Qwen/Qwen3-0.6B",
+   "author": "Qwen",
+   "param_count": "0.6B",
+   "license": "n/a (Apache-2.0 expected)",
+   "gated": false,
+   "size_bytes": 1503300328,
+   "chat_template": "present (Qwen3 ChatML, optional think block)",
+   "notes": "conversational/instruct version (tag 'conversational'); standalone '-Instruct' repos for 0.6B/1.7B/4B returned HTTP 401 on 2026-09-19 (not present under those IDs)"
+  },
+  {
+   "repo_id": "Qwen/Qwen3-1.7B",
+   "author": "Qwen",
+   "param_count": "1.7B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": 4063515592,
+   "chat_template": "present",
+   "notes": "conversational/instruct"
+  },
+  {
+   "repo_id": "Qwen/Qwen3-1.7B-Base",
+   "author": "Qwen",
+   "param_count": "1.7B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": 3441185608,
+   "chat_template": "present (base ships one)",
+   "notes": "base member of the tri-partition"
+  },
+  {
+   "repo_id": "Qwen/Qwen3-4B",
+   "author": "Qwen",
+   "param_count": "3.9B (4B class)",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": 8044982000,
+   "chat_template": "present",
+   "notes": "instruct; ~8.0GB fp16 fits the 16GB CPU container"
+  },
+  {
+   "repo_id": "Qwen/Qwen3-4B-Base",
+   "author": "Qwen",
+   "param_count": "3.9B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": 8044982000,
+   "chat_template": "present",
+   "notes": "base"
+  },
+  {
+   "repo_id": "Qwen/Qwen3-4B-Instruct-2507",
+   "author": "Qwen",
+   "param_count": "3.9B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": 8044982000,
+   "chat_template": "present",
+   "notes": "refresh revision (lastMod 2025-09-17); decide which revision to standardize"
+  },
+  {
+   "repo_id": "huihui-ai/Huihui-Qwen3-4B-Instruct-2507-abliterated",
+   "author": "huihui-ai",
+   "param_count": "3.9B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": 8040000000,
+   "chat_template": "SEPARATE chat_template.jinja file (not inline in tokenizer_config.json)",
+   "notes": "primary 4B abliterated candidate; supply template from base or the .jinja file"
+  },
+  {
+   "repo_id": "huihui-ai/Huihui-Qwen3.5-4B-abliterated",
+   "author": "huihui-ai",
+   "param_count": "4B-class",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": 9080000000,
+   "chat_template": "absent from tokenizer_config (separate .jinja)",
+   "notes": "Qwen3.5 family alternative (post-Qwen3); downloads 8170"
+  },
+  {
+   "repo_id": "mlabonne/Qwen3-4B-abliterated",
+   "author": "mlabonne",
+   "param_count": "3.9B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": 16090000000,
+   "chat_template": "present",
+   "notes": "oversize for 16GB container (likely fp32 or duplicated files); second independent abliteration author (author-dependence check)"
+  },
+  {
+   "repo_id": "Qwen/Qwen3.5-0.8B",
+   "author": "Qwen",
+   "param_count": "0.8B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": null,
+   "chat_template": "present (family)",
+   "notes": "the size family Llorente-Saguer used for base/instruct/abliterated triplets"
+  },
+  {
+   "repo_id": "meta-llama/Llama-3.2-1B",
+   "author": "meta-llama",
+   "param_count": "1.2B",
+   "license": "llama3.2",
+   "gated": "manual",
+   "size_bytes": 2471645608,
+   "chat_template": "expected (gated; standard Llama-3 header format)",
+   "notes": "gated: needs HF token + license acceptance; unsloth/Llama-3.2-1B-Instruct is the non-gated mirror"
+  },
+  {
+   "repo_id": "meta-llama/Llama-3.2-3B-Instruct",
+   "author": "meta-llama",
+   "param_count": "3.2B",
+   "license": "llama3.2",
+   "gated": "manual",
+   "size_bytes": 6425529048,
+   "chat_template": "expected",
+   "notes": "gated; unsloth/Llama-3.2-3B-Instruct non-gated mirror"
+  },
+  {
+   "repo_id": "google/gemma-2-2b-it",
+   "author": "google",
+   "param_count": "2.6B",
+   "license": "gemma-license",
+   "gated": "manual",
+   "size_bytes": 5228717488,
+   "chat_template": "expected (standard Gemma turns)",
+   "notes": "gated; unsloth/gemma-2-2b-it non-gated mirror; google/gemma-3-1b (non-IT) does NOT exist"
+  },
+  {
+   "repo_id": "google/gemma-3-1b-it",
+   "author": "google",
+   "param_count": "1B",
+   "license": "gemma",
+   "gated": "manual",
+   "size_bytes": 1999811208,
+   "chat_template": "expected",
+   "notes": "only -it exists for Gemma-3-1b"
+  },
+  {
+   "repo_id": "huihui-ai/Llama-3.2-3B-Instruct-abliterated",
+   "author": "huihui-ai",
+   "param_count": "3.2B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": 7210000000,
+   "chat_template": "per family (verify)",
+   "notes": "community-abliterated Llama-3.2-3B exists non-gated in safetensors"
+  },
+  {
+   "repo_id": "mylesgoose/Llama-3.2-1B-Instruct-abliterated",
+   "author": "mylesgoose",
+   "param_count": "1.2B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": null,
+   "chat_template": "per family (verify)",
+   "notes": "non-gated 1B abliterated in safetensors (downloads 81)"
+  },
+  {
+   "repo_id": "Goekdeniz-Guelmez/Josiefied-Qwen2.5-1.5B-Instruct-abliterated-v1",
+   "author": "Goekdeniz-Guelmez",
+   "param_count": "1.5B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": 3550000000,
+   "chat_template": "per family (verify)",
+   "notes": "fallback-family abliterated candidate"
+  },
+  {
+   "repo_id": "Qwen/Qwen2.5-1.5B-Instruct",
+   "author": "Qwen",
+   "param_count": "1.5B",
+   "license": "apache-2.0",
+   "gated": false,
+   "size_bytes": 3087467144,
+   "chat_template": "present",
+   "notes": "fallback base/instruct family pair"
+  },
+  {
+   "repo_id": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+   "author": "TinyLlama",
+   "param_count": "1.1B",
+   "license": "apache-2.0",
+   "gated": false,
+   "size_bytes": 2200119864,
+   "chat_template": "present",
+   "notes": "fallback; NO community-abliterated TinyLlama found in the top-120 abliterated search - verify before use"
+  },
+  {
+   "repo_id": "unsloth/Llama-3.2-1B-Instruct",
+   "author": "unsloth",
+   "param_count": "1.2B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": null,
+   "chat_template": "per family",
+   "notes": "non-gated mirror fallback for Llama-3.2"
+  },
+  {
+   "repo_id": "unsloth/Llama-3.2-3B-Instruct",
+   "author": "unsloth",
+   "param_count": "3.2B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": null,
+   "chat_template": "per family",
+   "notes": "non-gated mirror fallback"
+  },
+  {
+   "repo_id": "unsloth/gemma-2-2b-it",
+   "author": "unsloth",
+   "param_count": "2.6B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": null,
+   "chat_template": "per family",
+   "notes": "non-gated Gemma mirror"
+  },
+  {
+   "repo_id": "bartowski/gemma-2-2b-it-abliterated-GGUF",
+   "author": "bartowski",
+   "param_count": "2.6B",
+   "license": "n/a",
+   "gated": false,
+   "size_bytes": null,
+   "chat_template": "unknown (GGUF)",
+   "notes": "ONLY community-abliterated Gemma-2-2B found is GGUF-quantized; no safetensors community-abliterated Gemma-2-2B -> self-abliterate (Arditi recipe) or swap family for the experiment"
+  }
+ ],
+ "saturation": {
+  "search_log": [
+   {
+    "date": "2026-09-19",
+    "engine": "scholarly (openalex)",
+    "query": "activation scanner open-weight model safety sigma",
+    "top_hits": "no relevant hits"
+   },
+   {
+    "date": "2026-09-19",
+    "engine": "general (exa)",
+    "query": "activation-based verification open-weight models scanner safety",
+    "top_hits": "Google Open Source Blog AMS announcement; GitHub GoogleCloudPlatform/activation-model-scanner; Zenodo AMS paper"
+   },
+   {
+    "date": "2026-09-19",
+    "engine": "arXiv API (all:)",
+    "query": "all:\"activation scanner\"",
+    "top_hits": "no relevant hits (AMS is not on arXiv)"
+   },
+   {
+    "date": "2026-09-19",
+    "engine": "arXiv API (all:)",
+    "query": "all:\"refusal direction\" AND all:\"score\"",
+    "top_hits": "2606.25750 RAS; 2603.27412 LatentBiopsy; 2605.17413 Ablating Safety; 2608.18093 Abliteration Mitigation via Refusal Aliases (total 8)"
+   },
+   {
+    "date": "2026-09-19",
+    "engine": "arXiv API (all:)",
+    "query": "all:\"compliance\" AND all:\"activation\" AND all:\"refusal\"",
+    "top_hits": "2607.14147 Prefill Jailbreak; 2605.26772 Beyond a Single Direction; 2602.02132 There Is More to Refusal; 2502.09755 Jailbreak Initializations as Extractors of Compliance Directions (total 31)"
+   },
+   {
+    "date": "2026-09-19",
+    "engine": "arXiv API (all:)",
+    "query": "all:\"refusal rate\" AND all:\"activation\"",
+    "top_hits": "2510.08646 Activation Energy (over-refusal); 2606.26161 Refusal Lives Downstream of Persona; 2601.08489 Surgical Refusal Ablation; 2609.05794 Bait-and-Recover (total 23)"
+   },
+   {
+    "date": "2026-09-19",
+    "engine": "arXiv API (all:)",
+    "query": "all:\"knowledge-action gap\"",
+    "top_hits": "2601.12974 Bridging the Knowledge-Action Gap (dental clinical); 2603.18353 Basu; 2601.07972 Knowing But Not Doing (total 6)"
+   },
+   {
+    "date": "2026-09-19",
+    "engine": "arXiv API (all:)",
+    "query": "all:\"refusal\" AND all:\"abliteration\"",
+    "top_hits": "2607.17427 Abliteration Is Not a Scalpel; 2603.22061 Failure of Topic-Matched Contrast Baselines in Multi-Directional Refusal Abliteration; 2606.05396 Willing but Unable; 2512.13655 Comparative Analysis of Abliteration Methods (total 24)"
+   },
+   {
+    "date": "2026-09-19",
+    "engine": "arXiv API (all:)",
+    "query": "all:\"label-free\" AND all:\"safety\" AND all:\"language model\"",
+    "top_hits": "2608.17202 Fool's Gold; 2606.15980 Do Activation Monitors Survive Model Updates; 2605.00326 (total 8)"
+   },
+   {
+    "date": "2026-09-19",
+    "engine": "general (exa)",
+    "query": "few prompts safety score refusal activation metric",
+    "top_hits": "RAS pdf (2606.25750); Refusal Before Decoding (2605.28553)"
+   },
+   {
+    "date": "2026-09-19",
+    "engine": "general (exa)",
+    "query": "refusal-action index OR refusal action index language model",
+    "top_hits": "no exact-phrase match; only the Arditi NeurIPS proceedings pdf -> the exact term 'refusal-action index' is not occupied as a named metric"
+   },
+   {
+    "date": "2026-09-19",
+    "engine": "general (marginalia)",
+    "query": "predicting refusal rate from activations model score",
+    "top_hits": "no direct match; adjacent: Meta Muse Spark safety report (refusal rates), transformer-circuits J-lens"
+   },
+   {
+    "date": "2026-09-19",
+    "engine": "general (exa)",
+    "query": "behavior-calibrated activation metric safety open-weight",
+    "top_hits": "no direct match (only 'Behaviorally Calibrated RL' for hallucination, 2512.19920)"
+   }
+  ],
+  "closest_prior_art": [
+   {
+    "paper": "RAS / SafeVec (Huang, Chen, Yu, Lee, 2606.25750)",
+    "url": "https://arxiv.org/abs/2606.25750",
+    "overlap": "per-model refusal-alignment safety SCORE (calibrated 0-100) with behavioral correlation across Llama/Gemma/Qwen; needs a reference aligned model + three LABELED prompt sets (safe/unsafe/jailbreak) - not label-free, not few-prompt; the hypothesis's distinct slot is label-free few-prompt per-model refusal-RATE prediction"
+   },
+   {
+    "paper": "LatentBiopsy (Llorente-Saguer, 2603.27412)",
+    "url": "https://arxiv.org/abs/2603.27412",
+    "overlap": "training-free per-prompt harmful-prompt detection from 200 SAFE prompts (leading PC + angular deviation, Gaussian NLL anomaly score); flat across abliteration (<=0.015); per-PROMPT detector, no per-model behavioral refusal-rate prediction, no action-side readout, Qwen-only families"
+   },
+   {
+    "paper": "AMS (Messenger, 2026)",
+    "url": "https://zenodo.org/records/19501951",
+    "overlap": "per-model sigma separation score as safety-structure check; 14-config validation; needs labeled contrast prompt pairs + supervised probes; no published behavior correlation (r = -0.546 unverified)"
+   },
+   {
+    "paper": "Abliterated-checkpoint audit (Hurtado, 2607.01854)",
+    "url": "https://arxiv.org/abs/2607.01854",
+    "overlap": "per-model abliteration DETECTION via two internal signals (reference-anchored activation refusal-gap + weight-recovery energy), AUROC 0.95 on 273 checkpoints; abliteration-specific triage; needs an attested reference and base weights; no refusal-rate prediction"
+   },
+   {
+    "paper": "Refusal Before Decoding (Collu et al., 2605.28553)",
+    "url": "https://arxiv.org/abs/2605.28553",
+    "overlap": "refusal linearly decodable from intermediate activations at every block before the final layer (readout-side evidence); used for per-prompt jailbreak search fitness (Mechanistic AutoDAN), not a per-model safety metric"
+   },
+   {
+    "paper": "Harmful intent supervised directions (Llorente-Saguer, 2604.18901)",
+    "url": "https://arxiv.org/abs/2604.18901",
+    "overlap": "supervised harm-direction probe AUROC 0.982, flat +-0.003 across abliteration, 12 models / 4 families / 3 alignment variants; per-prompt classification with 100 labels/class; no per-model behavior prediction; no label-free protocol"
+   },
+   {
+    "paper": "There Is More to Refusal than a Single Direction (Joad et al., 2602.02132)",
+    "url": "https://arxiv.org/abs/2602.02132",
+    "overlap": "EMNLP-2026 counterpoint: refusal is multi-directional; steering any direction changes HOW the model refuses, not WHETHER (shared one-dimensional control knob); risk to the index's first-PC framing - cite and address with pooling sensitivity"
+   }
+  ],
+  "novelty_verdict": {
+   "date": "2026-09-19",
+   "sub_claims": {
+    "label-free few-prompt predictor of behavioral refusal rate": "THIN/OPEN - no paper found that predicts a per-MODEL behavioral refusal RATE from 0-few prompts without harmful labels. Nearest: RAS (labeled + reference model), LatentBiopsy (label-free but per-prompt detection). Dense competitor activity since Mar-Jun 2026; open but narrow; must be positioned against both.",
+    "action-side readout metric (refusal-vs-compliance logits at first generated position)": "OPEN as a named metric - the exact phrase 'refusal action index' is not occupied. The readout mechanism is not novel (Tuned Lens 2303.08112; Refusal Before Decoding 2605.28553); the novelty is the per-model behavior-calibrated scoring use.",
+    "knowledge-action tri-partition of base/aligned/abliterated": "OCCUPIED as phenomenology - Llorente-Saguer (+-0.003) and LatentBiopsy (<=0.015) already report probes persisting across abliteration; Basu 98.2/45.1 is the metric anchor; 'Willing but Unable' (2606.05396) and 'Abliteration Is Not a Scalpel' (2607.17427) cover capability/refusal separation. What remains open: using the tri-partition to PREDICT refusal rates per model (an index), not merely describing probes.",
+    "abliteration as a synthetic knowledge-action gap": "OCCUPIED as a phenomenon (probes flat at 0.982 / 0.937 while behavior collapses, per Llorente-Saguer / LatentBiopsy). Re-framing it as a calibration/validation device for a new metric is legitimate, but the phenomenon itself is documented.",
+    "whole claim (few-prompt label-free refusal-action index beating well-implemented baselines)": "OPEN but dense - requires the ICML-2026-MI-workshop bar-ii standard (clear practical benefit over well-implemented baselines); comparisons must include RAS, LatentBiopsy, AMS, probes, template log-prob; the r = -0.546 target is UNVERIFIED and must be replaced with in-zoo rho."
+   },
+   "hypothesis_risk": "HIGH for the 'beating a scanner at r = -0.546' framing (number unverified; RAS/LatentBiopsy are close); MODERATE overall - the label-free, few-prompt, per-model behavioral-predictor slot is genuinely thin as of 2026-09-19, but the window is closing fast and the knowledge-action tri-partition is already documented by Llorente-Saguer."
+  }
+ },
+ "numbers_to_reproduce": [
+  {
+   "number": "scanner-vs-compliance best r = -0.546 and the 14-configuration validation set",
+   "status": "UNVERIFIED for the r value (paper PDF 403; absent from blog/README/Zenodo abstract); VERIFIED for the 14-config set and sigma classes (3.8-8.4 / 1.1-1.3 / 3.33 / 0.69; quant drift <5%)",
+   "action": "drop the r target; report within-zoo scanner-vs-behavior rho"
+  },
+  {
+   "number": "Basu knowledge-action: 98.2% AUROC vs 45.1% output sensitivity, 53-pp gap, 3,695 significant SAE features, 400 vignettes (144 hazards, 256 benign), Qwen2.5-7B-Instruct + Steerling-8B, arXiv 2603.18353",
+   "status": "VERIFIED primary",
+   "action": "cite as the knowledge-vs-behavior anchor for the knowledge_control baseline"
+  },
+  {
+   "number": "Arditi: contrast-pair counts 128+32 train/val per class (NOT 74/54); readout at post-instruction positions (i*=-1 mostly); NO PCA; layer e.g. Llama-2 7B 14/32; orthogonalization W' = W - rhat^T*rhat*W over embedding/pos-emb/attn-out/MLP-out/biases; code repos; orthogonalized Llama-2 7B ASR 22.6 (79.9 no-system-prompt)",
+   "status": "VERIFIED primary",
+   "action": "implement B1 exactly; report without PCA/variance-share"
+  },
+  {
+   "number": "flat ~0.98 probes across the zoo (hypothesis claim)",
+   "status": "to-be-tested; anchors: Llorente-Saguer 0.982 +-0.003 (12 models) and LatentBiopsy >=0.937 <=0.015 (6 Qwen variants); Basu 98.2% single-model",
+   "action": "test with latent_probe + knowledge_control; compare to 0.982 and 0.937 anchors"
+  },
+  {
+   "number": "additional surfaced numbers: RAS calibrated 0-100, separates aligned/uncensored/abliterated, tracks ASR (no effect size in abstract); Hurtado abliteration audit AUROC 0.95 (z-sum) vs 0.84/0.90, balanced accuracy 0.89 FPR 0.11 missing 4/57; Refusal Before Decoding: decodability at every block + 72% search-time cut; AMS thresholds PASS >3.5 / WARNING 2.0-3.5 / CRITICAL <2.0",
+   "status": "VERIFIED primary (abstract-level)",
+   "action": "use as comparison/scrutiny targets where applicable"
+  }
+ ]
+}

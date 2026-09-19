@@ -1,0 +1,236 @@
+Skip to main
+
+[ ](https://zenodo.org/)
+
+__
+
+[Communities](/communities)
+
+[My dashboard](/me/uploads)
+
+[ __Log in](/login/?next=/records/19501951) [ __Sign up](/signup/)
+
+There is a [**newer version**](https://zenodo.org/records/19501951/latest) of the record available. 
+
+Published April 10, 2026  | Version v1
+
+[ Preprint ](/search?q=&f=resource_type%3Apublication%2Binner%3Apublication-preprint) __ Open 
+
+# AMS: Detecting Unsafe and Tampered Language Models via Activation Analysis
+
+### Authors/Creators
+
+  * [ Messenger, Glen1](/search?q=metadata.creators.person_or_org.name:%22Messenger,+Glen%22) __
+
+
+
+Show affiliations 
+
+  * 1\. [ ](https://ror.org/00njsd438 "Google \(United States\)'s ROR profile") Google (United States) 
+
+
+
+## Description
+
+We introduce AMS (Activation-based Model Scanner), a tool for verifying whether a language model is safe to deploy by analyzing its internal activation patterns. While "uncensored" and maliciously fine-tuned models pose increasing risks, current detection methods rely on behavioral testing that is slow, incomplete, and easily evaded. AMS takes a fundamentally different approach: measuring the geometric structure of safety-relevant concepts in the model's activation space. Safe models exhibit strong class separation (4-8σ) between harmful and benign content; models with removed or degraded safety training show collapsed separation (<2σ). Using contrastive prompt pairs and direction vector analysis, AMS performs model-level verification rather than prompt-level classification. We validate AMS across 14 model configurations spanning 3 architecture families (Llama, Gemma, Qwen), 3 quantization levels (FP16, INT8, INT4), and multiple model categories (instruction-tuned, base, abliterated, uncensored). In our validation set: (1) all four instruction-tuned models pass with 3.8-8.4σ separation; (2) three tested uncensored models (Dolphin, Lexi, LLama-3-8b-Uncensored) flagged as CRITICAL with 1.1-1.3σ on harmful content; (3) an abliterated Llama variant flagged as WARNING (3.33σ); (4) Llama base model shows 0.69σ, confirming absence of safety training; (5) quantization has minimal impact (<5% drift). One model labeled "uncensored" (DarkIdol) unexpectedly passed, suggesting either mislabeling or a technique that preserves activation geometry. AMS also provides identity verification via direction vector comparison. Scanning completes in 10-40 seconds per model on GPU hardware. We discuss threshold calibration, limitations of our validation scope, and directions for broader evaluation.
+
+## Files
+
+### 
+
+ams_paper.pdf __
+
+### 
+
+Files  (393.0 kB) __
+
+Name | Size |  [ __Download all](https://zenodo.org/api/records/19501951/files-archive)  
+---|---|---  
+[ams_paper.pdf](/records/19501951/files/ams_paper.pdf?download=1) md5:ab20bdd8390ef0e7b07395153d7558e3  __ | 393.0 kB |  [ __Preview](/records/19501951/preview/ams_paper.pdf?include_deleted=0) [ __Download](/records/19501951/files/ams_paper.pdf?download=1)  
+  
+## Additional details
+
+### Related works
+
+Is supplemented by
+     Software: https://github.com/GoogleCloudPlatform/activation-model-scanner (Other) 
+
+200
+
+__Views
+
+92
+
+__Downloads
+
+__ Show more details 
+
+| All versions | This version  
+---|---|---  
+Views __ Total views  |  200  |  151   
+Downloads __ Total downloads  |  92  |  77   
+Data volume __ Total data volume  | 61.5 MB | 36.9 MB  
+  
+[More info on how stats are collected....](https://zenodo.org/help/statistics)
+
+## Versions
+
+## External resources
+
+Indexed in
+
+  * [OpenAIRE ](https://explore.openaire.eu/search/result?pid=10.5281/zenodo.19501951)
+
+
+
+
+## Communities
+
+## Keywords and subjects
+
+### Keywords
+
+  * [ LLM safety ](/search?q=metadata.subjects.subject:%22LLM+safety%22 "Search results for LLM safety")
+  * [ activation analysis ](/search?q=metadata.subjects.subject:%22activation+analysis%22 "Search results for activation analysis")
+  * [ model verification ](/search?q=metadata.subjects.subject:%22model+verification%22 "Search results for model verification")
+  * [ AI security ](/search?q=metadata.subjects.subject:%22AI+security%22 "Search results for AI security")
+  * [ supply chain security ](/search?q=metadata.subjects.subject:%22supply+chain+security%22 "Search results for supply chain security")
+  * [ open-weight models ](/search?q=metadata.subjects.subject:%22open-weight+models%22 "Search results for open-weight models")
+
+
+
+## Details
+
+DOI 
+    
+
+DOI Badge
+
+####  DOI
+
+#### 
+    
+    
+    10.5281/zenodo.19501951
+
+###  Markdown 
+    
+    
+    [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19501951.svg)](https://doi.org/10.5281/zenodo.19501951)
+
+###  reStructuredText 
+    
+    
+    .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.19501951.svg
+      :target: https://doi.org/10.5281/zenodo.19501951
+
+###  HTML 
+    
+    
+    <a href="https://doi.org/10.5281/zenodo.19501951"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.19501951.svg" alt="DOI"></a>
+
+###  Image URL 
+    
+    
+    https://zenodo.org/badge/DOI/10.5281/zenodo.19501951.svg
+
+###  Target URL 
+    
+    
+    https://doi.org/10.5281/zenodo.19501951
+
+Resource type
+    Preprint
+Publisher
+    Zenodo
+Languages
+     English 
+
+## Rights
+
+License
+    
+
+Creative Commons Attribution 4.0 International 
+
+__
+
+The Creative Commons Attribution license allows re-distribution and re-use of a licensed work on the condition that the creator is appropriately credited.  [Read more](https://creativecommons.org/licenses/by/4.0/legalcode "Opens in new tab")
+
+## Citation
+
+## Export
+
+## Technical metadata
+
+Created
+     April 10, 2026
+
+Modified
+     April 10, 2026
+
+__Jump up
+
+## About
+
+  * [About](https://about.zenodo.org)
+  * [Policies](https://about.zenodo.org/policies)
+  * [Infrastructure](https://about.zenodo.org/infrastructure)
+  * [Principles](https://about.zenodo.org/principles)
+  * [Projects](https://about.zenodo.org/projects/)
+  * [Roadmap](https://about.zenodo.org/roadmap/)
+  * [Contact](https://about.zenodo.org/contact)
+
+
+
+## Blog
+
+  * [Blog](https://blog.zenodo.org)
+
+
+
+## Support
+
+  * [Help](https://help.zenodo.org/)
+  * [FAQ](https://support.zenodo.org/help/)
+
+
+
+## Developers
+
+  * [REST API](https://developers.zenodo.org)
+  * [OAI-PMH](https://developers.zenodo.org#oai-pmh)
+
+
+
+## Contribute
+
+  * [ __GitHub](https://github.com/zenodo/zenodo-rdm)
+  * [ __Donate](/donate)
+
+
+
+## Funded by
+
+  * [ ](https://home.cern)
+  * [ ](https://www.openaire.eu)
+  * [ ](https://commission.europa.eu/index_en)
+
+
+
+Powered by [CERN Data Centre](https://home.cern/science/computing/data-centre) & [InvenioRDM](https://inveniordm.docs.cern.ch/)
+
+  * [Status](https://stats.uptimerobot.com/vlYOVuWgM/)
+  * [Privacy policy](https://about.zenodo.org/privacy-policy)
+  * [Cookie policy](https://about.zenodo.org/cookie-policy)
+  * [Terms of Use](https://about.zenodo.org/terms)
+
+
+
+__
+
+__
+
+This site uses cookies. Find out more on [how we use cookies](https://about.zenodo.org/cookie-policy)
+
+Accept all cookies Accept only essential cookies

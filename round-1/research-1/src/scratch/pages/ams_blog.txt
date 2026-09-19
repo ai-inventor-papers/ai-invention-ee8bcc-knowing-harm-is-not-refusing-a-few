@@ -1,0 +1,482 @@
+#  [ opensource.google.com ](https://opensource.google.com/ "Google Open Source")
+
+[ Menu ](/#Navigation "Nav Toggle Open")
+
+  * [ Events ](https://opensource.google.com/events/ "Events")
+  * [ Projects ](https://opensource.google.com/projects/ "Projects")
+  * [ Programs and services ](https://opensource.google/programs-and-services "Programs and services")
+  * [ Documentation ](https://opensource.google/documentation/reference "Documentation")
+  * [ About ](https://opensource.google/about "About")
+  * [ Blog ](/ "Blog")
+
+
+
+## [Google Open Source Blog](/ "Google Open Source Blog")
+
+The latest news from Google on open source releases, major projects, events, and outreach programs for early career developers.
+
+###  Introducing AMS: Activation-based model scanner for open-weight LLM safety verification 
+
+#### Monday, April 27, 2026
+
+by Glen Messenger, Google Kubernetes Engine (GKE)
+
+The open-weight model ecosystem is thriving--and so is its shadow. A 2025 study identified over 8,000 safety-modified model repositories on Hugging Face alone, with modified models complying with unsafe requests at rates of 74% compared to 19% for their original instruction-tuned counterparts.
+
+For organizations deploying open-weight models, a critical question emerges: how do you know the model you downloaded is safe to run?
+
+We believe defensive security tools should be widely available. AMS represents our contribution to a safer AI ecosystem--one where developers everywhere can verify model integrity before deployment.
+
+Today we're releasing [AMS (Activation-based Model Scanner)](https://github.com/GoogleCloudPlatform/activation-model-scanner/), an open source tool that answers this question in 10-40 seconds--without sending a single prompt.
+
+## The Problem with Behavioral Testing
+
+Traditional safety verification relies on behavioral testing: send harmful prompts, check if the model refuses. This approach has three fundamental limitations.
+
+**It's slow.** Comprehensive benchmarks like HarmBench require hundreds of queries. For organizations running continuous integration pipelines or screening large model registries, this can be impractical.
+
+**It's incomplete.** No benchmark covers every harmful behavior. Models can exhibit safe behavior on known test sets while remaining unsafe on novel or out-of-distribution prompts.
+
+**It's gameable.** Models can be fine-tuned to refuse benchmark prompts while complying with novel attacks--a known limitation of purely behavioral evaluation approaches.
+
+### A Structural Approach
+
+[](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgUEuNtPV56Ernfwv-JI9ClPIxMIKnZC4PrP1-AXQAQayJ3z60LR2gCa4Ch1syR9g_mlZSsm7Svhyphenhyphen3wah8j1gf3Ds48R8oz4gUguwFem-xwb4avur041_hhTWkJzbGIgtNJsAdtPk-oR_dgDl4Pum4WvSPVWSWK6A96CWMQpJtwWH44_e3NnUgWihEPZhQ/s1600/Clean%20vs%20Tampered%20Models.png) Clean vs Tampered Models
+
+AMS takes a different approach entirely. Instead of testing what a model says, it measures how a model thinks.
+
+Safety training creates measurable geometric structure in a model's activation space. Instruction-tuned models develop internal "direction vectors"--representations that separate harmful content from benign content with high statistical confidence (4-8σ separation). When safety training is removed--through fine-tuning, abliteration, or training on unfiltered data--this geometric structure collapses.
+
+AMS measures this collapse directly. The approach is grounded in recent research on representation engineering, which demonstrates that high-level concepts are encoded linearly in LLM activation space and can be reliably extracted via simple linear probes on intermediate-layer hidden states.
+    
+    
+    git clone https://github.com/GoogleCloudPlatform/activation-model-scanner.git
+    cd activation-model-scanner && pip install -e .
+    
+    # Standard scan (3 concepts: harmful_content, injection_resistance, refusal_capability)
+    ams scan ./my-model
+    
+    # Quick scan (2 concepts, ~40% faster)
+    ams scan ./my-model --mode quick
+    
+    # Full scan (4 concepts including truthfulness)
+    ams scan ./my-model --mode full
+    
+    # JSON output for CI/CD pipelines
+    ams scan ./my-model --json
+    
+
+## What AMS Detects
+
+AMS operates as a two-tier scanner. Tier 1 measures whether safety-relevant activation structure exists at all--no baseline required. Tier 2 compares a model's activation fingerprint against a verified baseline to detect subtle modifications, including supply chain substitution.
+
+In our validation across 14 model configurations:
+
+  * **Instruction-tuned models** (Llama, Gemma, Qwen) show 3.8-8.4σ separation--consistent with strong safety training
+  * **Uncensored variants** (Dolphin, Lexi) show collapsed separation at 1.1-1.3σ--flagged as CRITICAL
+  * **Abliterated models** show partial degradation at 3.3σ--flagged as WARNING
+  * **Base models** (no safety training) show 0.69σ--confirming the absence of safety structure
+  * **Quantized models** (INT4/INT8) show less than 5% separation drift--safe to scan production deployments
+
+
+
+## Use Cases
+
+[](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdZPNaG6Ojk-xcb4Fed5QPFA29IzsyR5oxtv7tjsFcZ9GpAxHY7NHaMA1HPAtBotD4_mAtgcNNwnbBoUVQfXLBJiAgQSapRZ9Ug6Zg3gLyc1Q1Ti5JEBMl6pH539HYTq1BX_b7h4iA7ieud3gCDQ2_DOXT9rsiM82crv67TNvYIcCoAyQ-d5zDPioUO3I/s1600/Threat%20Landscape.png) Threat Landscape
+
+### CI/CD Safety Gates
+
+Integrate AMS into your model deployment pipeline to block unsafe models before they reach production. An example Github Actions workflow:
+    
+    
+    jobs:
+    model-safety-check:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+    
+        - name: Install AMS
+          run: pip install ams-scanner[cli]
+    
+        - name: Scan model
+          run: |
+            ams scan ./model \
+              --verify meta-llama/Llama-3-8B-Instruct \
+              --json > scan-results.json
+    
+        - name: Upload results
+          uses: actions/upload-artifact@v3
+          with:
+            name: ams-scan-results
+            path: scan-results.json
+    
+
+### Supply Chain Verification
+
+Confirm that downloaded weights match their claimed identity using Tier 2 fingerprint comparison.
+    
+    
+    # First, create a baseline from the official model
+    ams baseline create ./my-model
+    
+    # Then verify an unknown model against it
+    ams scan ./suspicious-model --verify ./my-model
+    
+
+### Registry Screening
+
+Automatically screen models at upload or download time to flag degraded safety structure before deployment.
+    
+    
+    # Standard scan (3 concepts: harmful_content, injection_resistance, refusal_capability)
+    ams scan ./my-model
+    
+    # Quick scan (2 concepts, ~40% faster)
+    ams scan ./my-model --mode quick
+    
+    # Full scan (4 concepts including truthfulness)
+    ams scan ./my-model --mode full
+    
+    # JSON output for CI/CD pipelines
+    ams scan ./my-model --json
+    
+
+## How It Works
+
+AMS processes a set of contrastive prompt pairs--examples that differ only in whether they contain harmful content--through the model under inspection. It extracts hidden states at an intermediate layer (typically 35-40% depth), computes a direction vector that separates the two classes, and measures class separation as a σ score.
+
+[](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgSdDsF2S4T_xBZNzT_StQPsVkzfcNHzFxjoukhtPQBJyN-fWmdyZjlQlunUvEIzSOoAL3pr3-7a53q5w_Ab0Zs1i77umIdjeX2_qoq54KMlqpmC4BPzvptmZyWewwY39g-Kl8ZwJQt7kUqSd0uuDGrCDsuObVseRc9CjZFNNMMgCvDmeRPxsYkS5j2cYE/s1600/How%20it%20Works.png) How it Works
+
+The key insight is that this measurement requires no generation, no benchmark queries, and no ground-truth labels. The entire scan completes in a single forward pass per prompt pair, typically 10-40 seconds on GPU hardware.
+
+The probe consists of a single direction vector (~16KB for standard 4096-dimensional models). No model weights are modified. The tool works with any Hugging Face-compatible model.
+
+## Get Started
+
+AMS is available now under Apache 2.0:
+
+  * GitHub: [github.com/GoogleCloudPlatform/activation-model-scanner/](https://github.com/GoogleCloudPlatform/activation-model-scanner/)
+
+
+
+We welcome contributions, baseline additions for new model families, and feedback from the communities. See the contributing guide in the repository for details.
+
+Labels:  [ AI Security ](https://opensource.googleblog.com/search/label/AI%20Security) , [ DevSecOps ](https://opensource.googleblog.com/search/label/DevSecOps) , [ LLM Safety ](https://opensource.googleblog.com/search/label/LLM%20Safety) , [ Model Verification ](https://opensource.googleblog.com/search/label/Model%20Verification) , [ open source ](https://opensource.googleblog.com/search/label/open%20source)
+
+[ _  _ ](https://opensource.googleblog.com/) [ _  _ ](https://opensource.googleblog.com/2026/04/the-journey-begins-meet-the-2026-gsoc-contributors.html "Newer Post") [ _  _ ](https://opensource.googleblog.com/2026/04/meet-the-a2family.html "Older Post")
+
+## Search This Blog
+
+## Popular Posts
+
+  * [Vectorized and performance-portable Quicksort](https://opensource.googleblog.com/2022/06/Vectorized%20and%20performance%20portable%20Quicksort.html)
+  * [The Journey Begins: Meet the 2026 GSoC Contributors!](https://opensource.googleblog.com/2026/04/the-journey-begins-meet-the-2026-gsoc-contributors.html)
+  * [Securing the agentic era: Introducing formal verification for CEL](https://opensource.googleblog.com/2026/08/securing-the-agentic-era-introducing-formal-verification-for-cel.html)
+  * [The End of an Era: Transitioning Away from Ingress NGINX](https://opensource.googleblog.com/2026/02/the-end-of-an-era-transitioning-away-from-ingress-nginx.html)
+  * [Shape the future with Google Summer of Code 2026!](https://opensource.googleblog.com/2025/12/shape-future-with-google-summer-of-code.html)
+
+
+
+##  Archive 
+
+  * [ ▼ ](javascript:void\(0\)) [ 2026 ](https://opensource.googleblog.com/2026/) (44)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2026/09/) (2)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2026/08/) (3)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2026/07/) (2)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2026/06/) (10)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2026/05/) (3)
+    * [ ▼ ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2026/04/) (9)
+      * [The Journey Begins: Meet the 2026 GSoC Contributors!](https://opensource.googleblog.com/2026/04/the-journey-begins-meet-the-2026-gsoc-contributors.html)
+      * [Introducing AMS: Activation-based model scanner fo...](https://opensource.googleblog.com/2026/04/introducing-ams-activation-based-model-scanner-for-open-weight-llm-safety-verification.html)
+      * [Meet the A2Family](https://opensource.googleblog.com/2026/04/meet-the-a2family.html)
+      * [A year of open collaboration: Celebrating the anni...](https://opensource.googleblog.com/2026/04/a-year-of-open-collaboration-celebrating-the-anniversary-of-a2a.html)
+      * [Jaspr: Why web development in Dart might just be a...](https://opensource.googleblog.com/2026/04/jaspr-why-web-development-in-dart-might-just-be-a-good-idea.html)
+      * [Leveraging CPU memory for faster, cost-efficient T...](https://opensource.googleblog.com/2026/04/leveraging-cpu-memory-for-faster-cost-efficient-tpu-llm-training.html)
+      * [Celebrate A2April!](https://opensource.googleblog.com/2026/04/celebrate-a2april.html)
+      * [Kubernetes goes AI-First: Unpacking the new AI con...](https://opensource.googleblog.com/2026/04/kubernetes-goes-ai-first-unpacking-the-new-ai-conformance-program.html)
+      * [Gemma 4: Expanding the Gemmaverse with Apache 2.0](https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2026/03/) (5)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2026/02/) (5)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2026/01/) (5)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2025 ](https://opensource.googleblog.com/2025/) (47)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2025/12/) (6)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2025/11/) (5)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2025/10/) (3)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2025/09/) (5)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2025/08/) (5)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2025/07/) (5)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2025/06/) (3)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2025/05/) (5)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2025/04/) (1)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2025/03/) (1)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2025/02/) (3)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2025/01/) (5)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2024 ](https://opensource.googleblog.com/2024/) (39)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2024/12/) (4)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2024/11/) (1)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2024/10/) (1)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2024/09/) (3)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2024/08/) (4)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2024/07/) (4)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2024/06/) (4)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2024/05/) (5)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2024/04/) (4)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2024/03/) (2)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2024/02/) (6)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2024/01/) (1)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2023 ](https://opensource.googleblog.com/2023/) (44)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2023/12/) (5)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2023/11/) (6)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2023/10/) (2)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2023/09/) (3)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2023/08/) (1)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2023/07/) (2)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2023/06/) (5)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2023/05/) (5)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2023/04/) (2)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2023/03/) (6)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2023/02/) (3)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2023/01/) (4)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2022 ](https://opensource.googleblog.com/2022/) (44)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2022/12/) (4)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2022/11/) (2)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2022/10/) (7)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2022/09/) (6)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2022/08/) (2)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2022/07/) (3)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2022/06/) (5)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2022/05/) (1)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2022/04/) (2)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2022/03/) (4)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2022/02/) (5)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2022/01/) (3)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2021 ](https://opensource.googleblog.com/2021/) (55)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2021/12/) (3)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2021/11/) (7)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2021/10/) (4)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2021/09/) (7)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2021/08/) (5)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2021/06/) (2)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2021/05/) (2)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2021/04/) (6)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2021/03/) (6)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2021/02/) (8)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2021/01/) (5)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2020 ](https://opensource.googleblog.com/2020/) (83)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2020/12/) (7)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2020/11/) (6)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2020/10/) (7)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2020/09/) (5)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2020/08/) (13)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2020/07/) (1)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2020/06/) (7)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2020/05/) (9)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2020/04/) (5)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2020/03/) (13)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2020/02/) (5)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2020/01/) (5)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2019 ](https://opensource.googleblog.com/2019/) (65)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2019/12/) (6)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2019/11/) (9)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2019/10/) (8)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2019/09/) (5)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2019/08/) (3)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2019/07/) (5)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2019/06/) (4)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2019/05/) (8)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2019/04/) (3)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2019/03/) (7)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2019/02/) (4)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2019/01/) (3)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2018 ](https://opensource.googleblog.com/2018/) (59)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2018/12/) (4)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2018/11/) (2)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2018/10/) (3)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2018/09/) (2)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2018/08/) (10)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2018/07/) (2)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2018/06/) (3)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2018/05/) (5)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2018/04/) (1)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2018/03/) (16)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2018/02/) (3)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2018/01/) (8)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2017 ](https://opensource.googleblog.com/2017/) (73)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2017/12/) (4)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2017/11/) (5)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2017/10/) (6)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2017/09/) (7)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2017/08/) (3)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2017/07/) (3)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2017/06/) (3)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2017/05/) (5)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2017/04/) (4)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2017/03/) (13)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2017/02/) (7)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2017/01/) (13)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2016 ](https://opensource.googleblog.com/2016/) (85)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2016/12/) (9)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2016/11/) (13)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2016/10/) (13)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2016/09/) (8)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2016/08/) (9)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2016/07/) (5)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2016/06/) (2)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2016/05/) (5)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2016/04/) (3)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2016/03/) (7)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2016/02/) (7)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2016/01/) (4)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2015 ](https://opensource.googleblog.com/2015/) (80)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2015/12/) (5)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2015/11/) (7)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2015/10/) (6)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2015/09/) (6)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2015/08/) (4)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2015/07/) (1)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2015/06/) (6)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2015/05/) (6)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2015/04/) (10)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2015/03/) (10)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2015/02/) (11)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2015/01/) (8)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2014 ](https://opensource.googleblog.com/2014/) (104)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2014/12/) (6)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2014/11/) (12)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2014/10/) (7)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2014/09/) (8)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2014/08/) (9)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2014/07/) (7)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2014/06/) (10)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2014/05/) (8)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2014/04/) (8)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2014/03/) (11)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2014/02/) (8)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2014/01/) (10)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2013 ](https://opensource.googleblog.com/2013/) (100)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2013/12/) (7)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2013/11/) (10)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2013/10/) (8)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2013/09/) (9)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2013/08/) (10)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2013/07/) (7)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2013/06/) (7)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2013/05/) (8)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2013/04/) (10)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2013/03/) (9)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2013/02/) (7)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2013/01/) (8)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2012 ](https://opensource.googleblog.com/2012/) (93)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2012/12/) (4)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2012/11/) (6)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2012/10/) (9)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2012/09/) (8)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2012/08/) (8)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2012/07/) (5)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2012/06/) (7)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2012/05/) (10)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2012/04/) (5)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2012/03/) (15)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2012/02/) (9)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2012/01/) (7)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2011 ](https://opensource.googleblog.com/2011/) (117)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2011/12/) (7)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2011/11/) (14)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2011/10/) (13)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2011/09/) (10)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2011/08/) (6)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2011/07/) (13)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2011/06/) (11)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2011/05/) (5)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2011/04/) (11)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2011/03/) (10)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2011/02/) (10)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2011/01/) (7)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2010 ](https://opensource.googleblog.com/2010/) (123)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2010/12/) (9)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2010/11/) (12)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2010/10/) (10)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2010/09/) (14)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2010/08/) (10)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2010/07/) (7)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2010/06/) (10)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2010/05/) (11)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2010/04/) (14)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2010/03/) (13)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2010/02/) (8)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2010/01/) (5)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2009 ](https://opensource.googleblog.com/2009/) (124)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2009/12/) (6)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2009/11/) (5)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2009/10/) (11)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2009/09/) (11)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2009/08/) (8)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2009/07/) (13)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2009/06/) (6)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2009/05/) (11)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2009/04/) (16)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2009/03/) (17)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2009/02/) (10)
+    * [ ► ](javascript:void\(0\)) [ January ](https://opensource.googleblog.com/2009/01/) (10)
+
+
+  * [ ► ](javascript:void\(0\)) [ 2008 ](https://opensource.googleblog.com/2008/) (167)
+    * [ ► ](javascript:void\(0\)) [ December ](https://opensource.googleblog.com/2008/12/) (10)
+    * [ ► ](javascript:void\(0\)) [ November ](https://opensource.googleblog.com/2008/11/) (11)
+    * [ ► ](javascript:void\(0\)) [ October ](https://opensource.googleblog.com/2008/10/) (13)
+    * [ ► ](javascript:void\(0\)) [ September ](https://opensource.googleblog.com/2008/09/) (16)
+    * [ ► ](javascript:void\(0\)) [ August ](https://opensource.googleblog.com/2008/08/) (12)
+    * [ ► ](javascript:void\(0\)) [ July ](https://opensource.googleblog.com/2008/07/) (20)
+    * [ ► ](javascript:void\(0\)) [ June ](https://opensource.googleblog.com/2008/06/) (14)
+    * [ ► ](javascript:void\(0\)) [ May ](https://opensource.googleblog.com/2008/05/) (21)
+    * [ ► ](javascript:void\(0\)) [ April ](https://opensource.googleblog.com/2008/04/) (16)
+    * [ ► ](javascript:void\(0\)) [ March ](https://opensource.googleblog.com/2008/03/) (17)
+    * [ ► ](javascript:void\(0\)) [ February ](https://opensource.googleblog.com/2008/02/) (17)
+
+
+
+## Share
+
+[](https://bsky.app/profile/opensource.google) [](https://twitter.com/GoogleOSS)
+
+  * [ Google ](//google.com "Google")
+  * [ Privacy ](https://www.google.com/policies/privacy/ "Privacy")
+  * [ Terms ](https://www.google.com/policies/terms/ "Terms")
+
+
+
+.

@@ -1,0 +1,354 @@
+{
+ "Qwen/Qwen3-0.6B": {
+  "id": "Qwen/Qwen3-0.6B",
+  "downloads": 22498727,
+  "likes": 1644,
+  "license": null,
+  "gated": false,
+  "tags": [
+   "transformers",
+   "safetensors",
+   "qwen3",
+   "text-generation",
+   "conversational",
+   "arxiv:2505.09388"
+  ],
+  "params_tags": [],
+  "safetensors_n": 1,
+  "sf_total_bytes_est": 1503300328,
+  "lastModified": "2025-07-26",
+  "pipeline_tag": "text-generation"
+ },
+ "Qwen/Qwen3-0.6B-Instruct": {
+  "error": "HTTP Error 401: Unauthorized"
+ },
+ "Qwen/Qwen3-1.7B": {
+  "id": "Qwen/Qwen3-1.7B",
+  "downloads": 3756550,
+  "likes": 548,
+  "license": null,
+  "gated": false,
+  "tags": [
+   "transformers",
+   "safetensors",
+   "qwen3",
+   "text-generation",
+   "conversational",
+   "arxiv:2505.09388"
+  ],
+  "params_tags": [],
+  "safetensors_n": 2,
+  "sf_total_bytes_est": 4063515592,
+  "lastModified": "2025-07-26",
+  "pipeline_tag": "text-generation"
+ },
+ "Qwen/Qwen3-1.7B-Base": {
+  "id": "Qwen/Qwen3-1.7B-Base",
+  "downloads": 1557776,
+  "likes": 79,
+  "license": null,
+  "gated": false,
+  "tags": [
+   "transformers",
+   "safetensors",
+   "qwen3",
+   "text-generation",
+   "conversational",
+   "arxiv:2505.09388"
+  ],
+  "params_tags": [],
+  "safetensors_n": 1,
+  "sf_total_bytes_est": 3441185608,
+  "lastModified": "2025-07-26",
+  "pipeline_tag": "text-generation"
+ },
+ "Qwen/Qwen3-1.7B-Instruct": {
+  "error": "HTTP Error 401: Unauthorized"
+ },
+ "Qwen/Qwen3-4B": {
+  "id": "Qwen/Qwen3-4B",
+  "downloads": 7242404,
+  "likes": 703,
+  "license": null,
+  "gated": false,
+  "tags": [
+   "transformers",
+   "safetensors",
+   "qwen3",
+   "text-generation",
+   "conversational",
+   "arxiv:2309.00071"
+  ],
+  "params_tags": [],
+  "safetensors_n": 3,
+  "sf_total_bytes_est": 8044982000,
+  "lastModified": "2025-07-26",
+  "pipeline_tag": "text-generation"
+ },
+ "Qwen/Qwen3-4B-Base": {
+  "id": "Qwen/Qwen3-4B-Base",
+  "downloads": 1548352,
+  "likes": 98,
+  "license": null,
+  "gated": false,
+  "tags": [
+   "transformers",
+   "safetensors",
+   "qwen3",
+   "text-generation",
+   "conversational",
+   "arxiv:2505.09388"
+  ],
+  "params_tags": [],
+  "safetensors_n": 3,
+  "sf_total_bytes_est": 8044982000,
+  "lastModified": "2025-07-26",
+  "pipeline_tag": "text-generation"
+ },
+ "Qwen/Qwen3-4B-Instruct": {
+  "error": "HTTP Error 401: Unauthorized"
+ },
+ "Qwen/Qwen3-4B-Instruct-2507": {
+  "id": "Qwen/Qwen3-4B-Instruct-2507",
+  "downloads": 3992032,
+  "likes": 968,
+  "license": null,
+  "gated": false,
+  "tags": [
+   "transformers",
+   "safetensors",
+   "qwen3",
+   "text-generation",
+   "conversational",
+   "arxiv:2505.09388"
+  ],
+  "params_tags": [],
+  "safetensors_n": 3,
+  "sf_total_bytes_est": 8044982000,
+  "lastModified": "2025-09-17",
+  "pipeline_tag": "text-generation"
+ },
+ "Qwen/Qwen3-8B": {
+  "id": "Qwen/Qwen3-8B",
+  "downloads": 12988756,
+  "likes": 2014,
+  "license": null,
+  "gated": false,
+  "tags": [
+   "transformers",
+   "safetensors",
+   "qwen3",
+   "text-generation",
+   "conversational",
+   "arxiv:2309.00071"
+  ],
+  "params_tags": [],
+  "safetensors_n": 5,
+  "sf_total_bytes_est": 16381516776,
+  "lastModified": "2025-07-26",
+  "pipeline_tag": "text-generation"
+ },
+ "Qwen/Qwen3-8B-Base": {
+  "id": "Qwen/Qwen3-8B-Base",
+  "downloads": 442094,
+  "likes": 125,
+  "license": null,
+  "gated": false,
+  "tags": [
+   "transformers",
+   "safetensors",
+   "qwen3",
+   "text-generation",
+   "conversational",
+   "arxiv:2505.09388"
+  ],
+  "params_tags": [],
+  "safetensors_n": 5,
+  "sf_total_bytes_est": 16381516776,
+  "lastModified": "2025-05-21",
+  "pipeline_tag": "text-generation"
+ },
+ "meta-llama/Llama-3.2-1B": {
+  "id": "meta-llama/Llama-3.2-1B",
+  "downloads": 902820,
+  "likes": 2602,
+  "license": null,
+  "gated": "manual",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "llama",
+   "text-generation",
+   "facebook",
+   "meta"
+  ],
+  "params_tags": [],
+  "safetensors_n": 1,
+  "sf_total_bytes_est": 2471645608,
+  "lastModified": "2024-10-24",
+  "pipeline_tag": "text-generation"
+ },
+ "meta-llama/Llama-3.2-1B-Instruct": {
+  "id": "meta-llama/Llama-3.2-1B-Instruct",
+  "downloads": 6921311,
+  "likes": 1681,
+  "license": null,
+  "gated": "manual",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "llama",
+   "text-generation",
+   "facebook",
+   "meta"
+  ],
+  "params_tags": [],
+  "safetensors_n": 1,
+  "sf_total_bytes_est": 2471645608,
+  "lastModified": "2024-10-24",
+  "pipeline_tag": "text-generation"
+ },
+ "meta-llama/Llama-3.2-3B": {
+  "id": "meta-llama/Llama-3.2-3B",
+  "downloads": 389320,
+  "likes": 945,
+  "license": null,
+  "gated": "manual",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "llama",
+   "text-generation",
+   "facebook",
+   "meta"
+  ],
+  "params_tags": [],
+  "safetensors_n": 2,
+  "sf_total_bytes_est": 6425529048,
+  "lastModified": "2024-10-24",
+  "pipeline_tag": "text-generation"
+ },
+ "meta-llama/Llama-3.2-3B-Instruct": {
+  "id": "meta-llama/Llama-3.2-3B-Instruct",
+  "downloads": 1859982,
+  "likes": 2618,
+  "license": null,
+  "gated": "manual",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "llama",
+   "text-generation",
+   "facebook",
+   "meta"
+  ],
+  "params_tags": [],
+  "safetensors_n": 2,
+  "sf_total_bytes_est": 6425529048,
+  "lastModified": "2024-10-24",
+  "pipeline_tag": "text-generation"
+ },
+ "google/gemma-2-2b": {
+  "id": "google/gemma-2-2b",
+  "downloads": 170008,
+  "likes": 701,
+  "license": null,
+  "gated": "manual",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "gemma2",
+   "text-generation",
+   "arxiv:2009.03300",
+   "arxiv:1905.07830"
+  ],
+  "params_tags": [],
+  "safetensors_n": 3,
+  "sf_total_bytes_est": 10457400944,
+  "lastModified": "2024-08-07",
+  "pipeline_tag": "text-generation"
+ },
+ "google/gemma-2-2b-it": {
+  "id": "google/gemma-2-2b-it",
+  "downloads": 672553,
+  "likes": 1505,
+  "license": null,
+  "gated": "manual",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "gemma2",
+   "text-generation",
+   "conversational",
+   "arxiv:2009.03300"
+  ],
+  "params_tags": [],
+  "safetensors_n": 2,
+  "sf_total_bytes_est": 5228717488,
+  "lastModified": "2024-08-27",
+  "pipeline_tag": "text-generation"
+ },
+ "google/gemma-3-1b": {
+  "error": "HTTP Error 401: Unauthorized"
+ },
+ "google/gemma-3-1b-it": {
+  "id": "google/gemma-3-1b-it",
+  "downloads": 3018334,
+  "likes": 1164,
+  "license": null,
+  "gated": "manual",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "gemma3_text",
+   "text-generation",
+   "conversational",
+   "arxiv:1905.07830"
+  ],
+  "params_tags": [],
+  "safetensors_n": 1,
+  "sf_total_bytes_est": 1999811208,
+  "lastModified": "2025-04-04",
+  "pipeline_tag": "text-generation"
+ },
+ "Qwen/Qwen2.5-1.5B-Instruct": {
+  "id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "downloads": 7184297,
+  "likes": 837,
+  "license": null,
+  "gated": false,
+  "tags": [
+   "transformers",
+   "safetensors",
+   "qwen2",
+   "text-generation",
+   "chat",
+   "conversational"
+  ],
+  "params_tags": [],
+  "safetensors_n": 1,
+  "sf_total_bytes_est": 3087467144,
+  "lastModified": "2024-09-25",
+  "pipeline_tag": "text-generation"
+ },
+ "TinyLlama/TinyLlama-1.1B-Chat-v1.0": {
+  "id": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "downloads": 1468835,
+  "likes": 1801,
+  "license": null,
+  "gated": false,
+  "tags": [
+   "transformers",
+   "safetensors",
+   "llama",
+   "text-generation",
+   "conversational",
+   "en"
+  ],
+  "params_tags": [],
+  "safetensors_n": 1,
+  "sf_total_bytes_est": 2200119864,
+  "lastModified": "2024-03-17",
+  "pipeline_tag": "text-generation"
+ }
+}

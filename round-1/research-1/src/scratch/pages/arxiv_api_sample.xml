@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/nkYFYQNOWyAEQzF//xMOSHYxpgY</id>
+  <title>arXiv Query: search_query=all:"refusal direction" AND all:"score"&amp;id_list=&amp;start=0&amp;max_results=10</title>
+  <updated>2026-09-19T02:17:48Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=all:%22refusal+direction%22+AND+all:%22score%22&amp;start=0&amp;max_results=10&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
+  <opensearch:totalResults>8</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2605.03095v1</id>
+    <title>Revisiting JBShield: Breaking and Rebuilding Representation-Level Jailbreak Defenses</title>
+    <updated>2026-05-04T19:17:50Z</updated>
+    <link href="https://arxiv.org/abs/2605.03095v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.03095v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Defending large language models (LLMs) against jailbreak attacks, such as Greedy Coordinate Gradient (GCG), remains a challenge, particularly under adaptive threat models where an attacker directly targets the defense mechanism. JBShield, a recent jailbreak defense with a 0% attack success rate in some settings, detects malicious prompts via two concept signals, a toxic concept and a jailbreak concept. We design JB-GCG, which modifies GCG's objective to combine two terms: refusal-direction suppression via cosine similarity between the refusal direction and hidden-state representations, and toxic-concept regularization via JBShield's own toxic concept score. Across five configurations on Llama-3-8B, JB-GCG achieves an average ASR of 46.2%, reaching up to 53.4% in the strongest setting. We further show that our attack remains effective against JBShield-M, achieving ASR up to 30.7% across evaluated settings. The attack persists across multiple JBShield recalibrations, confirming that the vulnerability is structural rather than calibration-specific. We analyze the cosine-similarity signatures of jailbreak representations and find that they occupy a distinctive region in refusal-direction fingerprint space that neither harmless nor harmful prompts inhabit. We introduce Representation Trajectory Verification (RTV), a new defense based on Mahalanobis outlier detection over multi-layer refusal-direction fingerprints. RTV attains an AUROC of 0.99 against our attack. Finally, we design and evaluate an additional adaptive attack against RTV with full white-box knowledge of the defense; the best attack achieves only 7% ASR at 13x the computational cost. Our results show that strong non-adaptive detection does not imply robustness under adaptive threat models, and that multi-layer representation consistency is a more reliable foundation for jailbreak detection than single-layer concept similarity.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-04T19:17:50Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Kemal Derya</name>
+    </author>
+    <author>
+      <name>Berk Sunar</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.18093v1</id>
+    <title>Abliteration Mitigation via Refusal Aliases</title>
+    <updated>2026-06-07T02:50:38Z</updated>
+    <link href="https://arxiv.org/abs/2608.18093v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.18093v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Abliteration, the removal of refusal capabilities from large language models by projecting weight matrices orthogonal to an extracted refusal direction, has emerged as a prominent safety concern through its ability to bypass post-training alignment using only a small set of contrastive prompts. We find that existing defenses commonly overlook the cause of abliteration; that is, how easily the refusal direction can be extracted. To hinder this process, we introduce a weight-editing method that obscures the refusal signal by applying rank-$k$ updates to residual stream writer matrices while replacing refusal-inducing activations with random aliases and correcting downstream reader matrices to preserve the model's original behavior. On Llama-3-8B, AMRA improves post-abliteration refusal scores by $2.16$ points over the undefended baseline with less than $0.5$ percentage points of MMLU degradation. On Gemma-2-9B, it improves the post-abliteration refusal by $14.70$ points over the baseline while keeping harmful output rates similar to the baseline, albeit at a greater utility cost.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-06-07T02:50:38Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Nathan Truong</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2606.25750v1</id>
+    <title>RAS: Measuring LLM Safety Through Refusal Alignment</title>
+    <updated>2026-06-24T12:19:40Z</updated>
+    <link href="https://arxiv.org/abs/2606.25750v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2606.25750v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Safety evaluation of large language models (LLMs) is commonly performed by querying models with unsafe or jailbreak prompts and judging whether their outputs violate a safety policy. Although useful, output-level evaluation is expensive, sensitive to judge choice, and easily tied to fixed question banks. We propose **SafeVec**, a white-box evaluation procedure that measures safety from internal representations rather than generated answers. **SafeVec** first extracts layer-wise refusal directions from a safety-aligned reference model, then selects stable layer windows where safe and unsafe behaviors are separable, and finally scores a target model by measuring whether its hidden states align with these refusal directions under unsafe and jailbreak prompts. The resulting metric, **RAS** (**R**efusal **A**lignment **S**core), maps representation-level refusal alignment to a calibrated 0-100 safety score. Across `Llama`, `Gemma`, and `Qwen` model families, RAS separates aligned models from uncensored and abliterated variants, tracks output-level attack success rate, and is substantially faster than judge-based evaluation. These results suggest that refusal alignment provides a compact and efficient signal for white-box LLM safety evaluation.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-06-24T12:19:40Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Chang-Chieh Huang</name>
+    </author>
+    <author>
+      <name>Yan-Lun Chen</name>
+    </author>
+    <author>
+      <name>Chia-Mu Yu</name>
+    </author>
+    <author>
+      <name>Wei-Bin Lee</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.17413v1</id>
+    <title>Ablating Safety: Mechanisms for Removing Alignment in Language Models for Security Applications</title>
+    <updated>2026-05-17T12:18:20Z</updated>
+    <link href="https://arxiv.org/abs/2605.17413v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.17413v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Safety-aligned language models often refuse cybersecurity requests whose wording resembles misuse, even when the task is authorized and defensive. This makes security evaluation ambiguous: a failed answer may reflect missing capability or refusal-policy intervention. Ablating Safety studies alignment removal as a controlled transformation-evaluation protocol for authorized security tasks, comparing authorized-context prompting, reversible refusal-direction activation projection, representation-control projections, and LoRA-based de-alignment or task adaptation.
+  We evaluate refusal, attempt rate, validated security success, general-capability retention, instability, and out-of-scope unsafe compliance on Security-AR, a 60-prompt suite of authorized security, benign general, and non-operational spillover probes. The reported runs include a four-model projection pilot with 416 completions, a three-model Qwen2.5 LoRA extension with 1,980 held-out completions, representation and robustness sweeps, and executable secure-repair validators. Single-vector refusal projection raises mean security score only from 0.46 to 0.50 while increasing unsafe compliance from 0.10 to 0.47; rank-4 refusal-subspace projection reaches 0.51 while matching the aligned spillover rate. Task-only LoRA raises mean security score to 0.87 with general score 0.83 and unsafe compliance 0.13, while refusal-suppression with retention raises spillover to 0.27. These results support evaluating alignment removal as a utility-risk frontier, not as an uncensoring recipe, and treating compliance alone as neither competence nor safe deployment.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-17T12:18:20Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Isaac David</name>
+    </author>
+    <author>
+      <name>Arthur Gervais</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.27412v1</id>
+    <title>The Geometry of Harmful Intent: Training-Free Anomaly Detection via Angular Deviation in LLM Residual Streams</title>
+    <updated>2026-03-28T21:19:58Z</updated>
+    <link href="https://arxiv.org/abs/2603.27412v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.27412v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We present LatentBiopsy, a training-free method for detecting harmful prompts by analysing the geometry of residual-stream activations in large language models. Given 200 safe normative prompts, LatentBiopsy computes the leading principal component of their activations at a target layer and characterises new prompts by their radial deviation angle $θ$ from this reference direction. The anomaly score is the negative log-likelihood of $θ$ under a Gaussian fit to the normative distribution, flagging deviations symmetrically regardless of orientation. No harmful examples are required for training.
+  We evaluate two complete model triplets from the Qwen3.5-0.8B and Qwen2.5-0.5B families: base, instruction-tuned, and \emph{abliterated} (refusal direction surgically removed via orthogonalisation). Across all six variants, LatentBiopsy achieves AUROC $\geq$0.937 for harmful-vs-normative detection and AUROC = 1.000 for discriminating harmful from benign-aggressive prompts (XSTest), with sub-millisecond per-query overhead.
+  Three empirical findings emerge. First, geometry survives refusal ablation: both abliterated variants achieve AUROC at most 0.015 below their instruction-tuned counterparts, establishing a geometric dissociation between harmful-intent representation and the downstream generative refusal mechanism. Second, harmful prompts exhibit a near-degenerate angular distribution ($σ_θ\approx 0.03$ rad), an order of magnitude tighter than the normative distribution ($σ_θ\approx 0.27$ rad), preserved across all alignment stages including abliteration. Third, the two families exhibit opposite ring orientations at the same depth: harmful prompts occupy the outer ring in Qwen3.5-0.8B but the inner ring in Qwen2.5-0.5B, directly motivating the direction-agnostic scoring rule.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-28T21:19:58Z</published>
+    <arxiv:comment>20 pages, 10 figures, 3 tables. Training-free harmful-prompt detector via angular deviation in LLM residual streams. Evaluated on six Qwen variants (base / instruct / abliterated). Achieves AUROC over 0.937 (harmful-vs-normative) and 1.000 (harmful-vs-benign-aggressive) with no harmful training data</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Isaac Llorente-Saguer</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.20759v1</id>
+    <title>Rethinking Fraud Safety Evaluation: Multi-Round Attacks Reveal Safety-Utility Tradeoffs in Graph-Context LLM Defenders</title>
+    <updated>2026-05-20T05:59:54Z</updated>
+    <link href="https://arxiv.org/abs/2605.20759v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.20759v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Single-turn safety evaluation is a poor proxy for real fraud defense, where attackers escalate across multiple rounds. This paper evaluates fraud defenders under replay and adaptive multi-round attacks and measures when a defender refuses, not just whether it eventually refuses. On a frozen multi-round suite built from Fraud-R1, graph-context defenders improve early safe refusal relative to text-only baselines under both replay and adaptive fraud pressure, but they also produce substantially more benign over-refusal. Direct probing of the trained graph encoder, together with paired shuffle-risk ablations on both fraud and benign sides replicated across two seeds on the Qwen-1.5B backbone, localises this cost to how the defender LLM consumes structured context rather than to graph-encoder quality: the encoder cleanly separates fraud from benign, while the LLM responds primarily to the presence of structured graph fields and only secondarily, and asymmetrically, to risk-score magnitude. Temporal graph context is directionally stronger than static and significantly better grounded, but is not yet conclusively superior on the main refusal metrics. The contribution is evaluative and measurement-oriented: robust fraud assessment must be multi-round, must report refusal timing, must account for benign false positives alongside fraud-side safety gains, and must localize observed costs to the graph signal or to how the LLM consumes it.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-20T05:59:54Z</published>
+    <arxiv:comment>19 pages, 3 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Laura Jiang</name>
+    </author>
+    <author>
+      <name>Reza Ryan</name>
+    </author>
+    <author>
+      <name>Qian Li</name>
+    </author>
+    <author>
+      <name>Nasim Ferdosian</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2606.10154v1</id>
+    <title>Quality Is Not a Safety Proxy Under Quantization</title>
+    <updated>2026-06-08T20:33:49Z</updated>
+    <link href="https://arxiv.org/abs/2606.10154v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2606.10154v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Quantized checkpoints are often screened first with quality metrics and only later, if at all, with direct safety tests. This paper audits that shortcut on a matched 51-row matrix spanning 6 models, 4 families, a 7-level GGUF ladder, and AWQ/GPTQ INT4 checkpoints. In this matrix the shortcut fails: all 36 quality-safety pairings split direction across models, and 9 hidden-danger rows plus 1 near-hidden-danger row show quality stable or improved while refusal falls by 12-68 percentage points. Seven of the 11 AWQ/GPTQ rows are hidden-danger. A four-probe mechanistic follow-up over the 17 Hugging Face-backed FP16/AWQ/GPTQ cells does not rescue it: entropy, refusal-direction, and calibration probes are weak or null separators of dangerous rows, and although probe-identified safety-associated neurons absorb 1.39$\times$ more quantization error overall ($p &lt; 5 \times 10^{-7}$), the effect is not regime-specific. Claude Sonnet 4 relabels 11,470 items in a predefined stratified set, agrees with the primary gemma3:12b judge on 89.9\% of rows ($κ= 0.873$, 95\% CI [0.866, 0.881]), and changes 0/10 hidden-danger cells. A calibrated study-internal behavioral screen -- the Refusal Template Stability Index (RTSI), built from four refusal-template drift features and calibrated on this matrix -- routes 10/10 hidden- or near-hidden-danger rows to direct safety testing (Wilson 95\% CI lower bound 0.72) while leaving 23 of 45 non-baseline rows in a low-risk bucket under both in-sample scoring and row-level leave-one-out validation; on the same matrix, the best single-feature baselines (unique-prefix-rate-delta, raw refusal-rate delta) recover 9/10 and 8/10 respectively at matched bucket size, and cross-stack transfer requires recalibration. For the quantized checkpoints, model families, and safety outcomes studied here, retained quality cannot waive direct safety evaluation.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-06-08T20:33:49Z</published>
+    <arxiv:comment>21 pages, 6 figures. Preprint</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Sahil Kadadekar</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2607.23496v2</id>
+    <title>Do LLMs Know Their Vulnerable Scenarios?</title>
+    <updated>2026-08-13T10:12:10Z</updated>
+    <link href="https://arxiv.org/abs/2607.23496v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2607.23496v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Safety-aligned large language models are trained to refuse harmful requests, yet embedding the same requests in particular scenarios can bypass their safeguards. Existing red-teaming methods empirically identify effective scenarios through observed attack outcomes, but why particular scenarios weaken refusal remains mechanistically unclear. Meanwhile, mechanistic interpretability studies have characterized both refusal directions and jailbreak-associated features, without explaining the relationship between the two representations. In this work, we show that scenario-wrapped prompts activate internal scenario directions whose causal steering consistently reduces refusal scores. Building on this finding, we propose \textsc{Concept2Scenario}, a concept-based attribution framework for vulnerable scenario discovery. It instantiates a broad concept space with a sparse autoencoder, attributes refusal suppression to individual concepts, translates the identified concepts into interpretable natural-language scenarios, and identifies synergistic scenario combinations through interaction attribution. Across three open-source models, two safety benchmarks, and six black-box jailbreak methods, the discovered scenarios serve as reusable priors that improve average attack success rates by up to $18.2$ percentage points. They also transfer to GPT-5, Claude-Haiku-4.5, and Gemini-3-Flash, suggesting that some scenario-level refusal vulnerabilities are shared across model families. Moreover, the identified combinations outperform their individual constituents and enable iterative attacks to succeed in fewer turns.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-07-26T06:54:28Z</published>
+    <arxiv:comment>19 pages, 11 Figures, Under Review</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Ziheng Peng</name>
+    </author>
+    <author>
+      <name>Huiqi Deng</name>
+    </author>
+    <author>
+      <name>Haoran Jing</name>
+    </author>
+    <author>
+      <name>Xuankun Rong</name>
+    </author>
+    <author>
+      <name>Jiahui Han</name>
+    </author>
+    <author>
+      <name>Xiting Wang</name>
+    </author>
+    <author>
+      <name>Na Zou</name>
+    </author>
+    <author>
+      <name>Xia Hu</name>
+    </author>
+  </entry>
+</feed>

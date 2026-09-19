@@ -1,0 +1,203 @@
+
+Skip to main content
+
+## Explore our many areas of focus
+
+[ Explore all research areas  ](/research-areas/)
+
+Applied AI & sciences
+
+[ Earth AI ](/research-areas/google-earth-ai/) [ Health AI ](/research-areas/health-ai/) [ Science AI ](/research-areas/science-ai/) [ Sustainability & crisis resilience ](/research-areas/sustainability-crisis-resilience/)
+
+Foundational ML & algorithms
+
+[ Algorithms & theory ](/research-areas/algorithms-and-theory/) [ Information retrieval ](/research-areas/information-retrieval/) [ Machine intelligence ](/research-areas/machine-intelligence/) [ Machine perception ](/research-areas/machine-perception/) [ Natural language processing ](/research-areas/natural-language-processing/)
+
+People, systems & quantum AI
+
+[ Human-computer interaction and visualization ](/research-areas/human-computer-interaction-and-visualization/) [ Networking ](/research-areas/networking/) [ Quantum AI ](/research-areas/quantum-computing/) [ Responsible AI ](/research-areas/responsible-ai/) [ Anti abuse ](/research-areas/anti-abuse/) [ Software engineering ](/research-areas/software-engineering/) [ Software systems ](/research-areas/software-systems/)
+
+Learn More
+
+[ Publications ](/pubs/) [ Projects ](/resources/our-projects/)
+
+## Building a collaborative ecosystem
+
+[ Datasets Access high-quality datasets to accelerate your research. ](https://research.google/resources/#datasets-1) [ Tools & services Explore our latest AI models and products. ](https://research.google/resources/#tools-services-2)
+
+[ Open source Discover open-source code and collaborate with the community. ](https://research.google/resources/#open-source-3)
+
+## Shaping the future together
+
+[ See all programs  ](/programs-and-events/)
+
+[ Faculty programs Participating in the academic research community through meaningful engagement with university faculty. ](/programs-and-events/faculty-engagement/) [ Student programs Supporting the next generation of researchers through a wide range of programming. ](/programs-and-events/student-engagement/)
+
+[ R&D programs Collaborating with industry and academic experts to support foundational science and innovation. ](/programs-and-events/2026-google-carbon-removal-and-superpollutant-elimination-rd-awards/) [ Locations Find your place in our global offices and research labs. ](/careers/)
+
+## Translating discovery into real-world impact
+
+[ People Our researchers drive advancements in computer science through both fundamental and applied research. ](/people/)
+
+[ Teams Collaborative groups tackling the world's most challenging AI problems. ](/teams/)
+
+Research
+
+## Explore our many areas of focus
+
+[ Explore all research areas  ](/research-areas/)
+
+Applied AI & sciences
+
+[ Earth AI ](/research-areas/google-earth-ai/) [ Health AI ](/research-areas/health-ai/) [ Science AI ](/research-areas/science-ai/) [ Sustainability & crisis resilience ](/research-areas/sustainability-crisis-resilience/)
+
+Foundational ML & algorithms
+
+[ Algorithms & theory ](/research-areas/algorithms-and-theory/) [ Information retrieval ](/research-areas/information-retrieval/) [ Machine intelligence ](/research-areas/machine-intelligence/) [ Machine perception ](/research-areas/machine-perception/) [ Natural language processing ](/research-areas/natural-language-processing/)
+
+People, systems & quantum AI
+
+[ Human-computer interaction and visualization ](/research-areas/human-computer-interaction-and-visualization/) [ Networking ](/research-areas/networking/) [ Quantum AI ](/research-areas/quantum-computing/) [ Responsible AI ](/research-areas/responsible-ai/) [ Anti abuse ](/research-areas/anti-abuse/) [ Software engineering ](/research-areas/software-engineering/) [ Software systems ](/research-areas/software-systems/)
+
+Learn More
+
+[ Publications ](/pubs/) [ Projects ](/resources/our-projects/)
+
+Resources
+
+## Building a collaborative ecosystem
+
+[ Datasets Access high-quality datasets to accelerate your research. ](https://research.google/resources/#datasets-1) [ Tools & services Explore our latest AI models and products. ](https://research.google/resources/#tools-services-2) [ Open source Discover open-source code and collaborate with the community. ](https://research.google/resources/#open-source-3)
+
+[ Conferences & events ](/conferences-and-events/)
+
+Careers
+
+## Shaping the future together
+
+[ See all programs  ](/programs-and-events/)
+
+[ Faculty programs Participating in the academic research community through meaningful engagement with university faculty. ](/programs-and-events/faculty-engagement/) [ Student programs Supporting the next generation of researchers through a wide range of programming. ](/programs-and-events/student-engagement/) [ R&D programs Collaborating with industry and academic experts to support foundational science and innovation. ](/programs-and-events/2026-google-carbon-removal-and-superpollutant-elimination-rd-awards/) [ Locations Find your place in our global offices and research labs. ](/careers/)
+
+[ Blog ](/blog/)
+
+About
+
+## Translating discovery into real-world impact
+
+[ People Our researchers drive advancements in computer science through both fundamental and applied research. ](/people/) [ Teams Collaborative groups tackling the world's most challenging AI problems. ](/teams/)
+
+[ Google Research ](/)
+
+[ Google AI Learn about all our AI ](https://ai.google/?utm_source=deepmind.google&utm_medium=referral&utm_campaign=gdm&utm_content=) [ Google DeepMind Explore the frontier of AI ](https://deepmind.google?utm_source=deepmind.google&utm_medium=referral&utm_campaign=gdm&utm_content=/) [ Google Labs Try our AI experiments ](https://labs.google/?utm_source=deepmind.google&utm_medium=referral&utm_campaign=gdm&utm_content=)
+
+Research 
+
+Resources 
+
+[ Conferences & events ](/conferences-and-events/)
+
+Careers 
+
+[ Blog ](/blog/)
+
+About 
+
+Search
+
+  1. [Home](/)
+  2. [Publications](/pubs/)
+
+
+
+# AASE: Activation-Based AI Safety Enforcement via Lightweight Probes
+
+[Glen Messenger](/people/glenmessenger/)
+
+Zenodo (2026) 
+
+[ Download ](https://zenodo.org/records/19209689) [ Google Scholar ](https://scholar.google.com/scholar?lr&ie=UTF-8&oe=UTF-8&q=AASE: Activation-Based AI Safety Enforcement via Lightweight Probes Glen Messenger)
+
+Copy Bibtex
+
+## Abstract
+
+We introduce AASE (Activation-based AI Safety Enforcement), a framework for post-perception safety monitoring in large language models. Unlike pre-perception approaches that analyze input or output text, AASE monitors the model's internal activation patterns—what the model "understands" rather than what text it processes or generates—enabling detection of safety-relevant states before harmful outputs are produced. The framework comprises three techniques: Activation Fingerprinting (AF) for harmful content detection, Agent Action Gating (AAG) for prompt injection defense, and Activation Policy Compliance (APC) for enterprise policy enforcement. We introduce paired contrastive training to isolate safety-relevant signals from confounding factors such as topic and style, addressing signal entanglement in polysemantic activations. Validation across 7 models from 3 architecture families shows strong class separation: Gemma-2-9B achieves AUC 1.00 with 7.2σ separation across all probes; AAG achieves AUC ≥0.88 across all models on the InjecAgent benchmark; APC achieves 0.97-1.00 AUC across three enterprise policies. Model size correlates with probe quality—Gemma-2-9B (7.2σ separation) outperforms Gemma-2-2B (4.3σ). All techniques survive INT4 quantization with minimal separation degradation. AASE is 9× faster than Llama Guard 3 (33ms vs 306ms) with higher TPR (88% vs 50%) at a tunable threshold that trades FPR for detection sensitivity, adding only 0.002ms probe overhead to existing inference. 
+
+## Meet the teams driving innovation
+
+Our teams advance the state of the art through research, systems engineering, and collaboration across Google.
+
+[ See our teams ](https://research.google/teams/)
+
+##  Follow us 
+
+  * [ ](https://x.com/GoogleResearch "Follow us on x")
+  * [ ](https://www.linkedin.com/showcase/googleresearch/ "Follow us on linkedin")
+  * [ ](https://www.youtube.com/c/GoogleResearch "Follow us on youtube")
+  * [ ](https://github.com/google-research "Follow us on github")
+
+
+
+## Explore our other initiatives
+
+### Google AI
+
+Discover how Google AI is committed to enriching knowledge and solving complex challenges
+
+  * [ Products  ](https://ai.google/products/)
+  * [ Build  ](https://ai.google/build/)
+  * [ Research  ](https://ai.google/research/)
+  * [ Responsibility  ](https://ai.google/public-policy-perspectives/)
+  * [ Societal Impact  ](https://ai.google/societal-impact/)
+  * [ About  ](https://ai.google/our-ai-journey/?section=intro)
+
+
+
+### Google Cloud
+
+High-performance infrastructure for cloud computing, data analytics & machine learning
+
+  * [ Overview  ](https://cloud.google.com/)
+  * [ Solutions  ](https://cloud.google.com/solutions)
+  * [ Products  ](https://cloud.google.com/products)
+  * [ Pricing  ](https://cloud.google.com/pricing)
+  * [ Resources  ](https://cloud.google.com/resources)
+
+
+
+### Google DeepMind
+
+Our mission is to build AI responsibly to benefit humanity
+
+  * [ Models  ](https://deepmind.google/models/)
+  * [ Research  ](https://deepmind.google/research/)
+  * [ Science  ](https://deepmind.google/science/)
+  * [ About  ](https://deepmind.google/about/)
+
+
+
+### Google Labs
+
+Explore the future of AI responsibly with Google Labs
+
+  * [ About  ](https://labs.google/#about)
+  * [ Experiments  ](https://labs.google/#experiments)
+  * [ Stay connected  ](https://labs.google/#stay-connected)
+
+
+
+[ ](https://www.google.com/?utm_source=research.google&utm_medium=referral "Google")
+
+[ About Google ](https://about.google/)
+
+[ Google Products ](https://about.google/intl/en/products/)
+
+[ Privacy ](https://policies.google.com/privacy)
+
+[ Terms ](https://policies.google.com/terms)
+
+Cookies management controls 
+
+×
+
