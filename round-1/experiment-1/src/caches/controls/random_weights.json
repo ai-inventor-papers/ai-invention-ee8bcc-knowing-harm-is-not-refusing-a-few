@@ -1,0 +1,13 @@
+{
+ "index12": -0.0801,
+ "sigma_max": -0.2667,
+ "probe_auroc_fixed": 0.7667,
+ "probe_auroc_raw_fixed": 0.7333,
+ "sharpness": 0.018,
+ "best_layer": 1,
+ "p_auroc_perm": 1.0,
+ "p_index_perm": 0.9552,
+ "n_permutations": 200,
+ "pass": true,
+ "notes": "permutation-null control (200 label shuffles): p_index=0.955 p_auroc=1.000; sharpness 0.018 (<0.1). pass=chance_consistent AND sharpness flat"
+}

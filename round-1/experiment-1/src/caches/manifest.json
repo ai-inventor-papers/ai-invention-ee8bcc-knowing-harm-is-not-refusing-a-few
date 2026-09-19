@@ -1,0 +1,161 @@
+{
+  "slots": {
+    "qwen3_0.6b_base": {
+      "id": "Qwen/Qwen3-0.6B-Base",
+      "family": "qwen3",
+      "cls": "base",
+      "size": "0.6B",
+      "status": "ok",
+      "short_id": "Qwen_Qwen3-0.6B-Base",
+      "notes": ""
+    },
+    "qwen3_0.6b_aligned": {
+      "id": "Qwen/Qwen3-0.6B",
+      "family": "qwen3",
+      "cls": "aligned",
+      "size": "0.6B",
+      "status": "ok",
+      "short_id": "Qwen_Qwen3-0.6B",
+      "notes": ""
+    },
+    "qwen3_0.6b_abliterated": {
+      "id": "mlabonne/Qwen3-0.6B-abliterated",
+      "family": "qwen3",
+      "cls": "abliterated",
+      "size": "0.6B",
+      "status": "ok",
+      "short_id": "mlabonne_Qwen3-0.6B-abliterated",
+      "notes": ""
+    },
+    "qwen3_1.7b_base": {
+      "id": "Qwen/Qwen3-1.7B-Base",
+      "family": "qwen3",
+      "cls": "base",
+      "size": "1.7B",
+      "status": "ok",
+      "short_id": "Qwen_Qwen3-1.7B-Base",
+      "notes": ""
+    },
+    "qwen3_1.7b_aligned": {
+      "id": "Qwen/Qwen3-1.7B",
+      "family": "qwen3",
+      "cls": "aligned",
+      "size": "1.7B",
+      "status": "ok",
+      "short_id": "Qwen_Qwen3-1.7B",
+      "notes": ""
+    },
+    "qwen3_1.7b_abliterated": {
+      "id": "mlabonne/Qwen3-1.7B-abliterated",
+      "family": "qwen3",
+      "cls": "abliterated",
+      "size": "1.7B",
+      "status": "ok",
+      "short_id": "mlabonne_Qwen3-1.7B-abliterated",
+      "notes": ""
+    },
+    "qwen3_4b_base": {
+      "id": "Qwen/Qwen3-4B-Base",
+      "family": "qwen3",
+      "cls": "base",
+      "size": "4B",
+      "status": "ok",
+      "short_id": "Qwen_Qwen3-4B-Base",
+      "notes": ""
+    },
+    "qwen3_4b_aligned": {
+      "id": "Qwen/Qwen3-4B",
+      "family": "qwen3",
+      "cls": "aligned",
+      "size": "4B",
+      "status": "ok",
+      "short_id": "Qwen_Qwen3-4B",
+      "notes": ""
+    },
+    "qwen3_4b_abliterated": {
+      "id": "mlabonne/Qwen3-4B-abliterated",
+      "family": "qwen3",
+      "cls": "abliterated",
+      "size": "4B",
+      "status": "ok",
+      "short_id": "mlabonne_Qwen3-4B-abliterated",
+      "notes": ""
+    },
+    "llama_1b_base": {
+      "id": "NousResearch/Llama-3.2-1B",
+      "family": "llama3",
+      "cls": "base",
+      "size": "1B",
+      "status": "ok",
+      "short_id": "NousResearch_Llama-3.2-1B",
+      "notes": ""
+    },
+    "llama_1b_instruct": {
+      "id": "unsloth/Llama-3.2-1B-Instruct",
+      "family": "llama3",
+      "cls": "aligned",
+      "size": "1B",
+      "status": "ok",
+      "short_id": "unsloth_Llama-3.2-1B-Instruct",
+      "notes": ""
+    },
+    "llama_1b_abliterated": {
+      "id": "mylesgoose/Llama-3.2-1B-Instruct-abliterated",
+      "family": "llama3",
+      "cls": "abliterated",
+      "size": "1B",
+      "status": "ok",
+      "short_id": "mylesgoose_Llama-3.2-1B-Instruct-abliterated",
+      "notes": ""
+    },
+    "gemma_1b_base": {
+      "id": "unsloth/gemma-3-1b",
+      "family": "gemma",
+      "cls": "base",
+      "size": "1B",
+      "status": "dropped",
+      "notes": "gemma_1b_base: unsloth/gemma-3-1b not downloadable (RepositoryNotFoundError: 401 Client Error. (Request ID: Root=1-6aaea05d-18eddfcc3a78bf2e72c71c8e;02866985-74ba-42d7-aa4a-9c6f) -> slot dropped"
+    },
+    "gemma_1b_it": {
+      "id": "unsloth/gemma-3-1b-it",
+      "family": "gemma",
+      "cls": "aligned",
+      "size": "1B",
+      "status": "ok",
+      "short_id": "unsloth_gemma-3-1b-it",
+      "notes": ""
+    },
+    "gemma_1b_abliterated": {
+      "id": "lunahr/gemma-3-1b-it-abliterated",
+      "family": "gemma",
+      "cls": "abliterated",
+      "size": "1B",
+      "status": "ok",
+      "short_id": "lunahr_gemma-3-1b-it-abliterated",
+      "notes": ""
+    },
+    "smollm2_1.7b_instruct": {
+      "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "family": "smollm2",
+      "cls": "aligned",
+      "size": "1.7B",
+      "status": "ok",
+      "short_id": "HuggingFaceTB_SmolLM2-1.7B-Instruct",
+      "notes": ""
+    },
+    "phi3_3.8b_mini": {
+      "id": "microsoft/Phi-3.5-mini-instruct",
+      "family": "phi3",
+      "cls": "aligned",
+      "size": "3.8B",
+      "status": "ok",
+      "short_id": "microsoft_Phi-3.5-mini-instruct",
+      "notes": ""
+    }
+  },
+  "notes": [
+    "gemma_1b_base: unsloth/gemma-3-1b not downloadable (RepositoryNotFoundError: 401 Client Error. (Request ID: Root=1-6aaea05d-18eddfcc3a78bf2e72c71c8e;02866985-74ba-42d7-aa4a-9c6f) -> slot dropped"
+  ],
+  "verified_at": "2026-09-19",
+  "method": "config.json download probe (token=False)"
+}

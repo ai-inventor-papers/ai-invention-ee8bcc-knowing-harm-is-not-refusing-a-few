@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "at": 1789847982.1498404,
+  "dry_run": true,
+  "freed_bytes": 0,
+  "skipped": "",
+  "removed": [],
+  "refused": [
+    {
+      "path": "hf_cache",
+      "why": "does not exist"
+    },
+    {
+      "path": ".venv",
+      "why": "does not exist"
+    },
+    {
+      "path": "__pycache__",
+      "why": "does not exist"
+    }
+  ]
+}

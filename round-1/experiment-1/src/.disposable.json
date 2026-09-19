@@ -1,0 +1,8 @@
+{"disposables": [
+  {"path": "hf_cache", "category": "model_download",
+    "reason": "16 open-weight HF checkpoints (91GB), all re-downloadable from HuggingFace; benchmarking is finished and method_out.json embeds every measured value"},
+  {"path": ".venv", "category": "venv",
+    "reason": "recreatable from pyproject.toml via `uv venv` + `uv pip install`"},
+  {"path": "__pycache__", "category": "scratch",
+    "reason": "Python bytecode, regenerated on import"}
+]}

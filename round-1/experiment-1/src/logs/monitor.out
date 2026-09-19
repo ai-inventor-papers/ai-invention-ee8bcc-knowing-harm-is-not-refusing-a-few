@@ -1,0 +1,30 @@
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+checkpoints=6
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+checkpoints=6
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+checkpoints=6
+17:48:07|INFO   |decoding 20 harmful + 5 benign (greedy, 400 tok)
+checkpoints=6
+17:48:07|INFO   |decoding 20 harmful + 5 benign (greedy, 400 tok)
+checkpoints=6
+17:50:10|INFO   |d_refusal(mean over harmful) = +1.32
+checkpoints=7
+17:51:06|INFO   |sharpness layer 26: max|slope|/4 = 0.020
+checkpoints=7
+17:51:21|INFO   |sharpness layer 35: max|slope|/4 = 0.007
+checkpoints=7
+17:53:01|INFO   |decoding 40 harmful + 10 benign (greedy, 400 tok)
+checkpoints=7
+17:53:01|INFO   |decoding 40 harmful + 10 benign (greedy, 400 tok)
+checkpoints=7
+17:53:01|INFO   |decoding 40 harmful + 10 benign (greedy, 400 tok)
+checkpoints=7
+17:55:55|INFO   |decoding 20 harmful + 5 benign (greedy, 400 tok)
+checkpoints=7
+17:55:55|INFO   |decoding 20 harmful + 5 benign (greedy, 400 tok)
+checkpoints=7
+17:58:12|INFO   |sharpness layer 5: max|slope|/4 = 0.051
+checkpoints=8
+17:59:04|INFO   |sharpness layer 35: max|slope|/4 = 0.035
+checkpoints=8
