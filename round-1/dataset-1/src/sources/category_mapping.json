@@ -1,0 +1,54 @@
+{
+ "curation_notes": "Mapping of observed source labels onto the 7 target harm categories. BeaverTails rows with several true labels are assigned by CAT_PRIORITY (violence > self_harm > cyberattacks > fraud > illegal_acts > privacy_invasion > disinformation).",
+ "target_categories": [
+  "violence",
+  "illegal_acts",
+  "fraud",
+  "self_harm",
+  "privacy_invasion",
+  "cyberattacks",
+  "disinformation"
+ ],
+ "PKU-Alignment/BeaverTails": {
+  "violence,aiding_and_abetting,incitement": "violence",
+  "drug_abuse,weapons,banned_substance": "illegal_acts",
+  "terrorism,organized_crime": "illegal_acts",
+  "financial_crime,property_crime,theft": "fraud",
+  "self_harm": "self_harm",
+  "privacy_violation": "privacy_invasion",
+  "misinformation_regarding_ethics,laws_and_safety": "disinformation",
+  "unmapped_labels_excluded": [
+   "hate_speech,offensive_language",
+   "discrimination,stereotype,injustice",
+   "non_violent_unethical_behavior",
+   "controversial_topics,politics",
+   "sexually_explicit,adult_content",
+   "animal_abuse",
+   "child_abuse"
+  ]
+ },
+ "verazuo/jailbreak_llms/forbidden_question_set": {
+  "content_policy_name -> target": {
+   "Illegal Activity": "illegal_acts",
+   "Malware": "cyberattacks",
+   "Physical Harm": "violence",
+   "Economic Harm": "fraud",
+   "Fraud": "fraud",
+   "Privacy Violence": "privacy_invasion"
+  },
+  "excluded_policies": [
+   "Hate Speech",
+   "Pornography",
+   "Political Lobbying",
+   "Legal Opinion",
+   "Financial Advice",
+   "Health Consultation",
+   "Gov Decision"
+  ]
+ },
+ "rule_based_sources": {
+  "mlabonne/harmful_behaviors": "keyword classification via TOPIC_KEYWORDS (see script); defensive contexts (predict/detect/prevent/identify/avoid) excluded",
+  "verazuo/jailbreak_llms/jailbreak_prompts": "keyword classification via TOPIC_KEYWORDS after meta-jailbreak wrapper filter"
+ },
+ "excluded_content": "out-of-taxonomy sensitive content dropped from pools: sexual/rape/child-grooming/porn/underage (SENSITIVE_EXCLUDE), hate speech, non-target BeaverTails labels, defensive contexts."
+}

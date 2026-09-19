@@ -1,0 +1,124 @@
+{
+ "curation_date": "2026-09-19T02:13:11.020190+00:00",
+ "sources": [
+  {
+   "id": "PKU-Alignment/BeaverTails",
+   "kind": "hf_dataset",
+   "status": "downloaded",
+   "revision_sha": "8401fe609d288129cc684a9b3be6a93e41cfe678",
+   "downloads": 15800,
+   "likes": 114,
+   "gated": false,
+   "license_tags": [
+    "license:cc-by-nc-4.0"
+   ],
+   "files": [
+    "round0/30k/test.jsonl.gz",
+    "round0/30k/train.jsonl.gz"
+   ]
+  },
+  {
+   "id": "databricks/databricks-dolly-15k",
+   "kind": "hf_dataset",
+   "status": "downloaded",
+   "revision_sha": "bdd27f4d94b9c1f951818a7da7fd7aeea5dbff1a",
+   "downloads": 64125,
+   "likes": 1100,
+   "gated": false,
+   "license_tags": [
+    "license:cc-by-sa-3.0"
+   ],
+   "files": [
+    "databricks-dolly-15k.jsonl"
+   ]
+  },
+  {
+   "id": "tatsu-lab/alpaca_eval",
+   "kind": "hf_dataset",
+   "status": "downloaded",
+   "revision_sha": "2edc6fad8be6b14ea7230aabfd08188da6b8b814",
+   "downloads": 16649,
+   "likes": 66,
+   "gated": false,
+   "license_tags": [
+    "license:cc-by-nc-4.0"
+   ],
+   "files": [
+    "alpaca_eval_gpt4_baseline.json"
+   ]
+  },
+  {
+   "id": "yahma/alpaca-cleaned",
+   "kind": "hf_dataset",
+   "status": "downloaded",
+   "revision_sha": "12567cabf869d7c92e573c7c783905fc160e9639",
+   "downloads": 24163,
+   "likes": 888,
+   "gated": false,
+   "license_tags": [
+    "license:cc-by-4.0"
+   ],
+   "files": [
+    "alpaca_data_cleaned.json"
+   ]
+  },
+  {
+   "id": "Anthropic/hh-rlhf",
+   "kind": "hf_dataset",
+   "status": "downloaded",
+   "revision_sha": "09be8c5bbc57cb3887f3a9732ad6aa7ec602a1fa",
+   "downloads": 39113,
+   "likes": 2078,
+   "gated": false,
+   "license_tags": [
+    "license:mit"
+   ],
+   "files": [
+    "helpful-base/train.jsonl.gz",
+    "red-team-attempts/red_team_attempts.jsonl.gz"
+   ]
+  },
+  {
+   "id": "fka/prompts.chat",
+   "kind": "hf_dataset",
+   "status": "downloaded",
+   "revision_sha": "fbea17f2045d053d27f1de9f099e9bfdbe55bf47",
+   "downloads": 23174,
+   "likes": 9833,
+   "gated": false,
+   "license_tags": [
+    "license:cc0-1.0"
+   ],
+   "files": [
+    "prompts.csv"
+   ]
+  },
+  {
+   "id": "mlabonne/harmful_behaviors",
+   "kind": "hf_dataset",
+   "status": "downloaded",
+   "revision_sha": "01cead01398926d81f7c52bdb790ee8cf77ebba7",
+   "downloads": 23803,
+   "likes": 156,
+   "gated": false,
+   "license_tags": [],
+   "files": [
+    "data/train-00000-of-00001.parquet"
+   ]
+  },
+  {
+   "id": "verazuo/jailbreak_llms",
+   "kind": "github_repo",
+   "status": "downloaded",
+   "revision_sha": "main",
+   "branch": "main",
+   "license": "MIT (verazuo/jailbreak_llms LICENSE file)",
+   "files": [
+    "data/prompts/jailbreak_prompts_2023_05_07.csv",
+    "data/forbidden_question/forbidden_question_set.csv",
+    "data/prompts/regular_prompts_2023_05_07.csv"
+   ],
+   "note": "JailbreakBench jailbreak_llms dataset (official GitHub mirror)"
+  }
+ ]
+}
