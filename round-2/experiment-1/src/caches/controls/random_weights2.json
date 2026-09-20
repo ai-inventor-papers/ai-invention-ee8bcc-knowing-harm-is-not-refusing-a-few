@@ -1,0 +1,16 @@
+{
+ "index12": -0.1335,
+ "index8": 0.0746,
+ "sigma_max": -0.5021,
+ "probe_auroc_fixed": 0.7833,
+ "probe_auroc_raw_fixed": 0.9333,
+ "c1": 10.5883,
+ "c2": 0.2764,
+ "c3": 0.9828,
+ "c1_at_probe_best_layer": 10.4207,
+ "p_auroc_perm": 0.005,
+ "p_index_perm": 0.8905,
+ "n_permutations": 200,
+ "pass_chance": false,
+ "expectation_note": "EXPECTATION FOR RANDOM WEIGHTS: C1 (participation ratio) should be LARGE/isotropic (near full rank of the 12 harmful states, ~ rank-1 spectrum spread), C2 ~ 0 (no meaningful probe axis alignment), C3 ~ near 0 (no persistent cross-layer harm axis).  Caveat carried: n=24 probe AUROC has a wide chance band (iteration-1 random control 0.77); only rank correlation and the calibration mapping are claim-bearing."
+}

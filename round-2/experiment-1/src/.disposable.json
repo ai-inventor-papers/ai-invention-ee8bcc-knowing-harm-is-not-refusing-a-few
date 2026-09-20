@@ -1,0 +1,9 @@
+{"disposables": [
+  {"path": ".venv", "category": "venv",
+   "reason": "uv virtualenv (9.1GB torch/transformers stack) with pinned deps in pyproject.toml; recreatable via uv venv + uv pip install"},
+  {"path": "hf_cache", "category": "cache",
+   "reason": "empty local HF cache dir; model weights live in the run-level .shared_cache (outside this workspace)"},
+  {"path": "__pycache__", "category": "cache",
+   "reason": "bytecode caches; regenerated automatically"}
+]}
+
